@@ -9,107 +9,107 @@ namespace Softr\Asaas\Entity;
 final class Customer extends \Softr\Asaas\Entity\AbstractEntity
 {
     /**
-     * @var int
+     * ASAAS internal ID, example "cus_000005075481"
      */
-    public $id;
-
+    public string $id;
     /**
      * @var string
      */
-    public $name;
-
+    public string $name;
     /**
      * @var string
      */
-    public $email;
-
+    public $externalReference;
     /**
      * @var string
      */
-    public $company;
-
+    public string $email;
     /**
      * @var string
      */
-    public $phone;
-
+    public string $company;
     /**
      * @var string
      */
-    public $mobilePhone;
-
+    public string $phone;
     /**
      * @var string
      */
-    public $address;
+    public string $mobilePhone;
 
+    /**
+     * Aditional email for sending notifications, comma separeted ","
+     * @var string
+     */
+    public $additionalEmails;
+
+    /**
+     * When the customer is a company
+     */
+    public $municipalInscription;
     /**
      * @var string
      */
-    public $addressNumber;
-
+    public string $address;
     /**
      * @var string
      */
-    public $complement;
-
+    public string $addressNumber;
     /**
      * @var string
      */
-    public $province;
-
+    public string $complement;
+    /**
+     * @var string
+     */
+    public string $province;
     /**
      * @var bool
      */
-    public $foreignCustomer;
-
+    public bool $foreignCustomer = false;
     /**
      * @var bool
      */
-    public $notificationDisabled;
-
+    public $notificationDisabled = true;
     /**
      * @var string
      */
-    public $city;
-
+    public string $city;
     /**
      * @var string
      */
-    public $state;
-
+    public string $state;
     /**
      * @var string
      */
-    public $country;
-
+    public string $country;
     /**
      * @var string
      */
-    public $postalCode;
-
+    public string $postalCode;
     /**
      * @var string
      */
-    public $cpfCnpj;
-
+    public string $cpfCnpj;
     /**
-     * @var string
+     * Person or Company, don't send to new customer
      */
-    public $personType;
-
+    public string $personType;
     /**
      * @var array
      */
-    public $subscriptions = [];
-
+    public array $subscriptions = [];
     /**
      * @var array
      */
-    public $payments = [];
-
+    public array $payments = [];
     /**
      * @var array
      */
-    public $notifications = [];
+    public array $notifications = [];
+    /**
+     * When a customer was deleted from ASAAS
+     * @var bool
+     */
+    public bool $deleted = false;
 }
