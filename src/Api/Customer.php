@@ -37,12 +37,11 @@ class Customer extends \Softr\Asaas\Api\AbstractApi
      * @param   int  $id  Customer Id
      * @return  CustomerEntity
      */
-    public function getById($id)
+    public function getById($id): CustomerEntity
     {
         $customer = $this->adapter->get(sprintf('%s/customers/%s', $this->endpoint, $id));
 
         $customer = json_decode($customer);
-
         return new CustomerEntity($customer);
     }
 
@@ -99,7 +98,7 @@ class Customer extends \Softr\Asaas\Api\AbstractApi
     /**
      * Delete Customer By Id
      *
-     * @param  string|int  $id  Customer Id
+     * @param  string  $id  Customer ID
      */
     public function delete($id)
     {

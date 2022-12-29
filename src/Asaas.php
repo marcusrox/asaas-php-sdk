@@ -50,7 +50,7 @@ class Asaas
      *
      * @return  Customer
      */
-    public function customer()
+    public function customer(): Customer
     {
         return new Customer($this->adapter, $this->ambiente);
     }
