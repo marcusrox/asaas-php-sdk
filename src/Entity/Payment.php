@@ -26,6 +26,11 @@ final class Payment extends \Softr\Asaas\Entity\AbstractEntity
     /**
      * @var string
      */
+    public $externalReference;
+
+    /**
+     * @var string
+     */
     public $billingType;
 
     /**
@@ -92,6 +97,11 @@ final class Payment extends \Softr\Asaas\Entity\AbstractEntity
      * @var int
      */
     public $installmentCount;
+
+    /**
+     * @var bool
+     */
+    public $postalService;
 
     /**
      * @var float
