@@ -1,14 +1,18 @@
 <?php
+
 namespace Softr\Asaas;
 
 
 // API's
 use Softr\Asaas\Adapter\AdapterInterface;
-use Softr\Asaas\Api\Customer;
-use Softr\Asaas\Api\Subscription;
-use Softr\Asaas\Api\Payment;
-use Softr\Asaas\Api\Notification;
 use Softr\Asaas\Api\City;
+use Softr\Asaas\Api\Customer;
+use Softr\Asaas\Api\Notification;
+use Softr\Asaas\Api\Payment;
+use Softr\Asaas\Api\Pix;
+use Softr\Asaas\Api\PixKey;
+use Softr\Asaas\Api\PixQrCode;
+use Softr\Asaas\Api\Subscription;
 
 
 /**
@@ -35,8 +39,8 @@ class Asaas
     /**
      * Constructor
      *
-     * @param  AdapterInterface  $adapter   Adapter Instance
-     * @param  string            $ambiente  (optional) Ambiente da API
+     * @param AdapterInterface $adapter Adapter Instance
+     * @param string $ambiente (optional) Ambiente da API
      */
     public function __construct(AdapterInterface $adapter, $ambiente = 'producao')
     {
@@ -93,5 +97,15 @@ class Asaas
     public function city()
     {
         return new City($this->adapter, $this->ambiente);
+    }
+
+    public function pixKey()
+    {
+        return new PixKey($this->adapter, $this->ambiente);
+    }
+
+    public function pixQrCode()
+    {
+        return new PixQrCode($this->adapter, $this->ambiente);
     }
 }
