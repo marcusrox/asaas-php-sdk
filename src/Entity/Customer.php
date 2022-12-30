@@ -11,11 +11,11 @@ final class Customer extends \Softr\Asaas\Entity\AbstractEntity
     /**
      * ASAAS internal ID, example "cus_000005075481"
      */
-    public string $id;
+    public $id;
     /**
      * @var string
      */
-    public string $name;
+    public $name;
     /**
      * @var string
      */
@@ -23,19 +23,19 @@ final class Customer extends \Softr\Asaas\Entity\AbstractEntity
     /**
      * @var string
      */
-    public string $email;
+    public $email;
     /**
      * @var string
      */
-    public string $company;
+    public $company;
     /**
      * @var string
      */
-    public string $phone;
+    public $phone;
     /**
      * @var string
      */
-    public string $mobilePhone;
+    public $mobilePhone;
 
     /**
      * Aditional email for sending notifications, comma separeted ","
@@ -50,23 +50,23 @@ final class Customer extends \Softr\Asaas\Entity\AbstractEntity
     /**
      * @var string
      */
-    public string $address;
+    public $address;
     /**
      * @var string
      */
-    public string $addressNumber;
+    public $addressNumber;
     /**
      * @var string
      */
-    public string $complement;
+    public $complement;
     /**
      * @var string
      */
-    public string $province;
+    public $province;
     /**
      * @var bool
      */
-    public bool $foreignCustomer = false;
+    public $foreignCustomer = false;
     /**
      * @var bool
      */
@@ -74,27 +74,28 @@ final class Customer extends \Softr\Asaas\Entity\AbstractEntity
     /**
      * @var string
      */
-    public string $city;
+    public $city;
     /**
      * @var string
      */
-    public string $state;
+    public $state;
     /**
      * @var string
      */
-    public string $country;
+    public $country;
     /**
      * @var string
      */
-    public string $postalCode;
+    public $postalCode;
     /**
      * @var string
      */
-    public string $cpfCnpj;
+    public $cpfCnpj;
     /**
      * Person or Company, don't send to new customer
+     * @var string
      */
-    public string $personType;
+    public $personType;
     /**
      * @var array
      */
@@ -111,5 +112,5 @@ final class Customer extends \Softr\Asaas\Entity\AbstractEntity
      * When a customer was deleted from ASAAS
      * @var bool
      */
-    public bool $deleted = false;
+    public $deleted = false;
 }
