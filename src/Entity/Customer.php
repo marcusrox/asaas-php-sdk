@@ -1,12 +1,12 @@
 <?php
-namespace Softr\Asaas\Entity;
+namespace Adrianovcar\Asaas\Entity;
 
 /**
  * Customer Entity
  *
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-final class Customer extends \Softr\Asaas\Entity\AbstractEntity
+final class Customer extends \Adrianovcar\Asaas\Entity\AbstractEntity
 {
     /**
      * ASAAS internal ID, example "cus_000005075481"

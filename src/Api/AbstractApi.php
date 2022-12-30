@@ -1,8 +1,8 @@
 <?php
-namespace Softr\Asaas\Api;
+namespace Adrianovcar\Asaas\Api;
 
-use Softr\Asaas\Adapter\AdapterInterface;
-use Softr\Asaas\Entity\Meta;
+use Adrianovcar\Asaas\Adapter\AdapterInterface;
+use Adrianovcar\Asaas\Entity\Meta;
 
 /**
  * Abstract API
@@ -27,7 +27,7 @@ abstract class AbstractApi
 
     /**
      * Endpoint Sandbox
-     * 
+     *
      * @var string
      */
     const ENDPOINT_SANDBOX = 'https://sandbox.asaas.com/api/v3';

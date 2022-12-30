@@ -1,5 +1,5 @@
 <?php
-namespace Softr\Asaas\Entity;
+namespace Adrianovcar\Asaas\Entity;
 
 /**
  * Abstract Entity

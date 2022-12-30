@@ -1,7 +1,7 @@
 <?php
-namespace Softr\Asaas\Adapter;
+namespace Adrianovcar\Asaas\Adapter;
 
-use Softr\Asaas\Exception\HttpException;
+use Adrianovcar\Asaas\Exception\HttpException;
 
 /**
  * Adapter Http Interface
