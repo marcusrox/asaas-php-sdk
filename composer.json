@@ -1,11 +1,16 @@
 {
-    "name"       : "softr/asaas-php-sdk",
+    "name"       : "adrianovcar/asaas-php-sdk",
     "type"       : "library",
-    "description": "Asaas.com PHP API Wrapper",
-    "keywords"   : ["Asaas", "API", "Payment SaaS", "Credit Card", "Boleto"],
-    "homepage"   : "https://github.com/softr/asaas-php-sdk",
+    "description": "Asaas.com PHP API v3 Wrapper",
+    "keywords"   : ["Asaas", "API", "Payment SaaS", "Credit Card", "Boleto", "PIX"],
+    "homepage"   : "https://github.com/adrianovcar/asaas-php-sdk",
     "license"    : "MIT",
     "authors": [
+        {
+            "name"    : "Adriano Carrijo",
+            "email"   : "contato@moblu.es",
+            "homepage": "https://moblu.es"
+        },
         {
             "name"    : "Agência Softr",
             "email"   : "agencia.softr@gmail.com",
