@@ -66,7 +66,7 @@ class GuzzleHttpAdapter implements AdapterInterface
         {
             $this->response = $e->getResponse();
 
-            $this->handleError();
+            return $this->handleError();
         }
 
         return $this->response->getBody();
@@ -129,7 +129,7 @@ class GuzzleHttpAdapter implements AdapterInterface
         {
             $this->response = $e->getResponse();
 
-            $this->handleError();
+            return $this->handleError();
         }
 
         return $this->response->getBody();
@@ -159,9 +159,15 @@ class GuzzleHttpAdapter implements AdapterInterface
     {
         $body = (string) $this->response->getBody();
         $code = (int) $this->response->getStatusCode();
-
         $content = json_decode($body);
 
-        throw new HttpException(isset($content->message) ? $content->message : 'Request not processed.', $code);
+        $message = $content->errors[0] ?? $content ?? $this->response->getReasonPhrase() ?? $body;
+
+        $item = array(
+            'success' => false,
+            'code' => $code,
+            'errors' => $message);
+
+        throw new HttpException(json_encode($item), $code);
     }
 }
