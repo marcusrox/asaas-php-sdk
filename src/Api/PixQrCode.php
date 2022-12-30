@@ -1,15 +1,15 @@
 <?php
 
-namespace Softr\Asaas\Api;
+namespace Adrianovcar\Asaas\Api;
 
-use Softr\Asaas\Exception\HttpException;
+use Adrianovcar\Asaas\Exception\HttpException;
 
 /**
  * Payment API Endpoint
  *
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-class PixQrCode extends \Softr\Asaas\Api\AbstractApi
+class PixQrCode extends \Adrianovcar\Asaas\Api\AbstractApi
 {
     /**
      * Create a new Static PIX QR CODE

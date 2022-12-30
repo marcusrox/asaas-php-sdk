@@ -1,12 +1,12 @@
 <?php
-namespace Softr\Asaas\Entity;
+namespace Adrianovcar\Asaas\Entity;
 
 /**
  * City Entity
  *
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-final class City extends \Softr\Asaas\Entity\AbstractEntity
+final class City extends \Adrianovcar\Asaas\Entity\AbstractEntity
 {
     /**
      * @var int

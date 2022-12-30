@@ -1,18 +1,18 @@
 <?php
 
-namespace Softr\Asaas;
+namespace Adrianovcar\Asaas;
 
 
 // API's
-use Softr\Asaas\Adapter\AdapterInterface;
-use Softr\Asaas\Api\City;
-use Softr\Asaas\Api\Customer;
-use Softr\Asaas\Api\Notification;
-use Softr\Asaas\Api\Payment;
-use Softr\Asaas\Api\Pix;
-use Softr\Asaas\Api\PixKey;
-use Softr\Asaas\Api\PixQrCode;
-use Softr\Asaas\Api\Subscription;
+use Adrianovcar\Asaas\Adapter\AdapterInterface;
+use Adrianovcar\Asaas\Api\City;
+use Adrianovcar\Asaas\Api\Customer;
+use Adrianovcar\Asaas\Api\Notification;
+use Adrianovcar\Asaas\Api\Payment;
+use Adrianovcar\Asaas\Api\Pix;
+use Adrianovcar\Asaas\Api\PixKey;
+use Adrianovcar\Asaas\Api\PixQrCode;
+use Adrianovcar\Asaas\Api\Subscription;
 
 
 /**

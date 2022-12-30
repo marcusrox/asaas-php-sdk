@@ -43,10 +43,10 @@ Exemplo
 
 require 'vendor/autoload.php';
 
-use Softr\Asaas\Adapter\BuzzAdapter;
-use Softr\Asaas\Adapter\GuzzleAdapter;
-use Softr\Asaas\Adapter\GuzzleHttpAdapter;
-use Softr\Asaas\Asaas;
+use Adrianovcar\Asaas\Adapter\BuzzAdapter;
+use Adrianovcar\Asaas\Adapter\GuzzleAdapter;
+use Adrianovcar\Asaas\Adapter\GuzzleHttpAdapter;
+use Adrianovcar\Asaas\Asaas;
 
 // Instancie o adapter usando o token de acesso
 $adapter = new BuzzAdapter('seu_token_de_acesso');

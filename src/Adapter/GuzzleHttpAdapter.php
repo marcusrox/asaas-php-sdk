@@ -1,9 +1,9 @@
 <?php
-namespace Softr\Asaas\Adapter;
+namespace Adrianovcar\Asaas\Adapter;
 
 
 // Asaas
-use Softr\Asaas\Exception\HttpException;
+use Adrianovcar\Asaas\Exception\HttpException;
 
 // GuzzleHttp
 use GuzzleHttp\Client;
