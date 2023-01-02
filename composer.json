@@ -23,12 +23,12 @@
     "require-dev": {
         "kriswallsmith/buzz": "~0.10",
         "guzzle/guzzle"     : "~3.7",
-        "guzzlehttp/guzzle" : "~5.0|~6.0"
+        "guzzlehttp/guzzle" : "^7.0"
     },
     "suggest": {
         "kriswallsmith/buzz": "To use BuzzAdapter, require kriswallsmith/buzz:~0.10.",
         "guzzle/guzzle"     : "To use GuzzleAdapter, require guzzle/guzzle:~3.7.",
-        "guzzlehttp/guzzle" : "To use GuzzleHttpAdapter, require guzzlehttp/guzzle:~5.0|~6.0."
+        "guzzlehttp/guzzle" : "To use GuzzleHttpAdapter, require guzzlehttp/guzzle:^7.0."
     },
     "autoload": {
         "psr-4": {
