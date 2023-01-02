@@ -127,15 +127,15 @@ class Payment extends AbstractApi
      * Create a new PIX QRCODE for a given payment
      *
      * @param string $payment_id Asaas Payment ID
-     *
-     * @return string
-     *
+     * @return array
      * @throws Exception
      */
-    public function qrCode(string $payment_id): string
+    public function qrCode(string $payment_id): array
     {
         try {
-            return $this->adapter->get(sprintf('%s/payments/%s/pixQrCode', $this->endpoint, $payment_id));
+            $result = $this->adapter->get(sprintf('%s/payments/%s/pixQrCode', $this->endpoint, $payment_id));
+
+            return json_decode($result, true);
         } catch (Exception $e) {
             return $this->dispatchException($e);
         }
