@@ -3,11 +3,14 @@ namespace Adrianovcar\Asaas\Adapter;
 
 
 // Asaas
+use Adrianovcar\Asaas\Exception\AsaasApiException;
 use Adrianovcar\Asaas\Exception\HttpException;
 
 // GuzzleHttp
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 
 
@@ -45,7 +48,7 @@ class GuzzleHttpAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @throws \Exception
      */
     public function get($url)
     {
@@ -53,18 +56,15 @@ class GuzzleHttpAdapter implements AdapterInterface
         {
             $this->response = $this->client->get($url);
         }
-        catch(RequestException $e)
-        {
-            $this->response = $e->getResponse();
-
-            return $this->handleError();
+        catch (RequestException $e) {
+            $this->handleError($e);
         }
 
         return $this->response->getBody();
     }
 
     /**
-     * {@inheritdoc}
+     * @throws \Exception
      */
     public function delete($url)
     {
@@ -72,18 +72,15 @@ class GuzzleHttpAdapter implements AdapterInterface
         {
             $this->response = $this->client->delete($url);
         }
-        catch(RequestException $e)
-        {
-            $this->response = $e->getResponse();
-
-            $this->handleError();
+        catch (RequestException $e) {
+            $this->handleError($e);
         }
 
         return $this->response->getBody();
     }
 
     /**
-     * {@inheritdoc}
+     * @throws \Exception
      */
     public function put($url, $content = '')
     {
@@ -94,11 +91,8 @@ class GuzzleHttpAdapter implements AdapterInterface
         {
             $this->response = $this->client->put($url, $options);
         }
-        catch(RequestException $e)
-        {
-            $this->response = $e->getResponse();
-
-            $this->handleError();
+        catch (RequestException $e) {
+            $this->handleError($e);
         }
 
         return $this->response->getBody();
@@ -106,6 +100,7 @@ class GuzzleHttpAdapter implements AdapterInterface
 
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
     public function post($url, $content = '')
     {
@@ -116,11 +111,8 @@ class GuzzleHttpAdapter implements AdapterInterface
         {
             $this->response = $this->client->post($url, $options);
         }
-        catch(\GuzzleHttp\Exception\RequestException $e)
-        {
-            $this->response = $e->getResponse();
-
-            return $this->handleError();
+        catch (RequestException $e) {
+            $this->handleError($e);
         }
 
         return $this->response->getBody();
@@ -144,21 +136,13 @@ class GuzzleHttpAdapter implements AdapterInterface
     }
 
     /**
-     * @throws HttpException
+     * @throws \Exception
      */
-    protected function handleError()
+    protected function handleError(RequestException $e)
     {
-        $body = (string) $this->response->getBody();
-        $code = (int) $this->response->getStatusCode();
-        $content = json_decode((string) $this->response->getBody());
+        $content = json_decode((string) $e->getResponse()->getBody());
+        $message = $content->errors[0]->description ?? $content ?? $e->getResponse()->getReasonPhrase() ?? '--';
 
-        $message = $content->errors[0]->description ?? $content ?? $this->response->getReasonPhrase() ?? $body;
-
-        $item = array(
-            'success' => false,
-            'code' => $code,
-            'errors' => $message);
-
-        throw new HttpException(json_encode($item, JSON_UNESCAPED_UNICODE), $code);
+        throw new \Exception($message, $e->getCode());
     }
 }

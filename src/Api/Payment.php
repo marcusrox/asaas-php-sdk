@@ -3,7 +3,7 @@ namespace Adrianovcar\Asaas\Api;
 
 // Entities
 use Adrianovcar\Asaas\Entity\Payment as PaymentEntity;
-use Adrianovcar\Asaas\Exception\HttpException;
+use Adrianovcar\Asaas\Exception\AsaasApiException;
 
 /**
  * Payment API Endpoint
@@ -17,19 +17,22 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
      *
      * @param   array  $filters  (optional) Filters Array
      * @return  array  Payments Array
+     *
+     * @throws \Exception
      */
     public function getAll(array $filters = [])
     {
-        $payments = $this->adapter->get(sprintf('%s/payments?%s', $this->endpoint, http_build_query($filters)));
+        try {
+            $payments = $this->adapter->get(sprintf('%s/payments?%s', $this->endpoint, http_build_query($filters)));
+            $payments = json_decode($payments);
+            $this->extractMeta($payments);
 
-        $payments = json_decode($payments);
-
-        $this->extractMeta($payments);
-
-        return array_map(function($payment)
-        {
-            return new PaymentEntity($payment);
-        }, $payments->data);
+            return array_map(function ($payment) {
+                return new PaymentEntity($payment);
+            }, $payments->data);
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 
     /**
@@ -37,14 +40,19 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
      *
      * @param   int  $id  Payment Id
      * @return  PaymentEntity
+     *
+     * @throws \Exception
      */
     public function getById($id)
     {
-        $payment = $this->adapter->get(sprintf('%s/payments/%s', $this->endpoint, $id));
+        try {
+            $payment = $this->adapter->get(sprintf('%s/payments/%s', $this->endpoint, $id));
+            $payment = json_decode($payment);
 
-        $payment = json_decode($payment);
-
-        return new PaymentEntity($payment);
+            return new PaymentEntity($payment);
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 
     /**
@@ -52,20 +60,23 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
      *
      * @param   int    $customerId  Customer Id
      * @param   array  $filters     (optional) Filters Array
-     * @return  PaymentEntity
+     * @return  PaymentEntity[]
+     *
+     * @throws \Exception
      */
     public function getByCustomer($customerId, array $filters = [])
     {
-        $payments = $this->adapter->get(sprintf('%s/customers/%s/payments?%s', $this->endpoint, $customerId, http_build_query($filters)));
+        try {
+            $payments = $this->adapter->get(sprintf('%s/customers/%s/payments?%s', $this->endpoint, $customerId, http_build_query($filters)));
+            $payments = json_decode($payments);
+            $this->extractMeta($payments);
 
-        $payments = json_decode($payments);
-
-        $this->extractMeta($payments);
-
-        return array_map(function($payment)
-        {
-            return new PaymentEntity($payment);
-        }, $payments->data);
+            return array_map(function ($payment) {
+                return new PaymentEntity($payment);
+            }, $payments->data);
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 
     /**
@@ -75,6 +86,8 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
      * @param   array  $filters         (optional) Filters Array
 
      * @return  PaymentEntity[]|string
+     *
+     * @throws \Exception
      */
     public function getBySubscription($subscriptionId)
     {
@@ -86,16 +99,17 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
             return array_map(function ($payment) {
                 return new PaymentEntity($payment);
             }, $payments->data);
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
         }
     }
 
     /**
      * Create New Payment
      *
-     * @param   array  $data  Payment Data
+     * @param array $data Payment Data
      * @return  PaymentEntity|string
+     * @throws \Exception
      */
     public function create(array $data)
     {
@@ -104,8 +118,8 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
             $payment = json_decode($payment);
 
             return new PaymentEntity($payment);
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
         }
     }
 
@@ -115,6 +129,7 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
      * @param   string  $id    Payment Id
      * @param   array   $data  Payment Data
      * @return  PaymentEntity|string
+     * @throws \Exception
      */
     public function update($id, array $data)
     {
@@ -123,8 +138,8 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
             $payment = json_decode($payment);
 
             return new PaymentEntity($payment);
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
         }
     }
 
@@ -132,13 +147,15 @@ class Payment extends \Adrianovcar\Asaas\Api\AbstractApi
      * Delete Payment By Id
      *
      * @param  string|int  $id  Payment Id
+     * @throws \Exception
+     *
      */
     public function delete($id)
     {
         try{
             $this->adapter->delete(sprintf('%s/payments/%s', $this->endpoint, $id));
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
         }
     }
 }

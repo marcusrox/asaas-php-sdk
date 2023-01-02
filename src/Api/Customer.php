@@ -16,33 +16,42 @@ class Customer extends \Adrianovcar\Asaas\Api\AbstractApi
      *
      * @param   array  $filters  (optional) Filters Array
      * @return  array  Customers Array
+     *
+     * @throws \Exception
      */
     public function getAll(array $filters = [])
     {
-        $customers = $this->adapter->get(sprintf('%s/customers?%s', $this->endpoint, http_build_query($filters)));
+        try{
+            $customers = $this->adapter->get(sprintf('%s/customers?%s', $this->endpoint, http_build_query($filters)));
+            $customers = json_decode($customers);
+            $this->extractMeta($customers);
 
-        $customers = json_decode($customers);
-
-        $this->extractMeta($customers);
-
-        return array_map(function($customer)
-        {
-            return new CustomerEntity($customer);
-        }, $customers->data);
+            return array_map(function ($customer) {
+                return new CustomerEntity($customer);
+            }, $customers->data);
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 
     /**
-     * Get Customer By Id
+     * Get Customer By ID
      *
-     * @param   int  $id  Customer Id
+     * @param string $id  Customer ID
      * @return  CustomerEntity
+     *
+     * @throws \Exception
      */
-    public function getById($id): CustomerEntity
+    public function getById(string $id): CustomerEntity
     {
-        $customer = $this->adapter->get(sprintf('%s/customers/%s', $this->endpoint, $id));
+        try{
+            $customer = $this->adapter->get(sprintf('%s/customers/%s', $this->endpoint, $id));
+            $customer = json_decode($customer);
 
-        $customer = json_decode($customer);
-        return new CustomerEntity($customer);
+            return new CustomerEntity($customer);
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 
     /**
@@ -53,10 +62,8 @@ class Customer extends \Adrianovcar\Asaas\Api\AbstractApi
      */
     public function getByEmail($email)
     {
-        foreach($this->getAll(['name' => $email]) as $customer)
-        {
-            if($customer->email == $email)
-            {
+        foreach ($this->getAll(['name' => $email]) as $customer) {
+            if ($customer->email == $email) {
                 return $customer;
             }
         }
@@ -69,14 +76,19 @@ class Customer extends \Adrianovcar\Asaas\Api\AbstractApi
      *
      * @param   array  $data  Customer Data
      * @return  CustomerEntity
+     *
+     * @throws \Exception
      */
     public function create(array $data)
     {
-        $customer = $this->adapter->post(sprintf('%s/customers', $this->endpoint), $data);
+        try{
+            $customer = $this->adapter->post(sprintf('%s/customers', $this->endpoint), $data);
+            $customer = json_decode($customer);
 
-        $customer = json_decode($customer);
-
-        return new CustomerEntity($customer);
+            return new CustomerEntity($customer);
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 
     /**
@@ -88,20 +100,28 @@ class Customer extends \Adrianovcar\Asaas\Api\AbstractApi
      */
     public function update($id, array $data)
     {
-        $customer = $this->adapter->post(sprintf('%s/customers/%s', $this->endpoint, $id), $data);
+        try{
+            $customer = $this->adapter->post(sprintf('%s/customers/%s', $this->endpoint, $id), $data);
+            $customer = json_decode($customer);
 
-        $customer = json_decode($customer);
-
-        return new CustomerEntity($customer);
+            return new CustomerEntity($customer);
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 
     /**
      * Delete Customer By Id
      *
      * @param  string  $id  Customer ID
+     * @throws \Exception
      */
     public function delete($id)
     {
-        $this->adapter->delete(sprintf('%s/customers/%s', $this->endpoint, $id));
+        try{
+            $this->adapter->delete(sprintf('%s/customers/%s', $this->endpoint, $id));
+        } catch (\Exception $e) {
+            $this->dispatchException($e);
+        }
     }
 }

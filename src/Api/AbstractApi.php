@@ -3,6 +3,7 @@ namespace Adrianovcar\Asaas\Api;
 
 use Adrianovcar\Asaas\Adapter\AdapterInterface;
 use Adrianovcar\Asaas\Entity\Meta;
+use Adrianovcar\Asaas\Exception\AsaasApiException;
 
 /**
  * Abstract API
@@ -94,5 +95,13 @@ abstract class AbstractApi
     public function getMeta()
     {
         return $this->meta;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function dispatchException(\Exception $exception)
+    {
+        throw new \Exception($exception->getMessage(), $exception->getCode());
     }
 }

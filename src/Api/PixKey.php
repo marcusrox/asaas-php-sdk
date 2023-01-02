@@ -3,27 +3,29 @@
 namespace Adrianovcar\Asaas\Api;
 
 use Adrianovcar\Asaas\Entity\Customer as CustomerEntity;
-use Adrianovcar\Asaas\Exception\HttpException;
+use Exception;
 
 /**
  * Payment API Endpoint
  *
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-class PixKey extends \Adrianovcar\Asaas\Api\AbstractApi
+class PixKey extends AbstractApi
 {
     /**
      * Create new Pix Key
      * Keys are needed to create a new Pix payment
      *
      * @return  string
+     *
+     * @throws Exception
      */
-    public function create()
+    public function create(): string
     {
         try {
             return $this->adapter->post(sprintf('%s/pix/addressKeys', $this->endpoint), ["type" => "EVP"]);
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (Exception $e) {
+            $this->dispatchException($e);
         }
     }
 
@@ -37,8 +39,10 @@ class PixKey extends \Adrianovcar\Asaas\Api\AbstractApi
      *
      * @param array $filters (optional) Filters Array
      * @return  array  Customers Array
+     *
+     * @throws Exception
      */
-    public function getAll(array $filters = [])
+    public function getAll(array $filters = []): array
     {
         try {
             $customers = $this->adapter->get(sprintf('%s/pix/addressKeys?%s', $this->endpoint, http_build_query($filters)));
@@ -50,8 +54,8 @@ class PixKey extends \Adrianovcar\Asaas\Api\AbstractApi
             return array_map(function ($customer) {
                 return new CustomerEntity($customer);
             }, $customers->data);
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (Exception $e) {
+            $this->dispatchException($e);
         }
     }
 
@@ -59,28 +63,34 @@ class PixKey extends \Adrianovcar\Asaas\Api\AbstractApi
      * Get key by ID
      * Keys are needed to create a new Pix payment
      *
+     * @param $id
      * @return  string
+     *
+     * @throws Exception
      */
-    public function getById($id)
+    public function getById($id): string
     {
         try {
             return $this->adapter->get(sprintf('%s/pix/addressKeys/%s', $this->endpoint, $id));
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (Exception $e) {
+            $this->dispatchException($e);
         }
     }
 
     /**
      * Delete key by ID
      *
+     * @param $id
      * @return  string
+     *
+     * @throws Exception
      */
-    public function delete($id)
+    public function delete($id): string
     {
         try {
             return $this->adapter->delete(sprintf('%s/pix/addressKeys/%s', $this->endpoint, $id));
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (Exception $e) {
+            $this->dispatchException($e);
         }
     }
 }
