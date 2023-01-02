@@ -36,21 +36,12 @@ class GuzzleHttpAdapter implements AdapterInterface
     /**
      * Constructor
      *
-     * @param  string                $token   Access Token
+     * @param string $token   Access Token
      * @param  ClientInterface|null  $client  Client Instance
      */
-    public function __construct($token, ClientInterface $client = null)
+    public function __construct(string $token, ClientInterface $client = null)
     {
-        if(version_compare(ClientInterface::VERSION, '6') === 1)
-        {
-            $this->client = $client ?: new Client(['headers' => ['access_token' => $token]]);
-        }
-        else
-        {
-            $this->client = $client ?: new Client();
-
-            $this->client->setDefaultOption('headers/access_token', $token);
-        }
+        $this->client = $client ?: new Client(['headers' => ['access_token' => $token]]);
     }
 
     /**
@@ -119,13 +110,13 @@ class GuzzleHttpAdapter implements AdapterInterface
     public function post($url, $content = '')
     {
         $options = [];
-        $options['form_params'] = $content;
+        $options['json'] = $content;
 
         try
         {
             $this->response = $this->client->post($url, $options);
         }
-        catch(RequestException $e)
+        catch(\GuzzleHttp\Exception\RequestException $e)
         {
             $this->response = $e->getResponse();
 
@@ -159,15 +150,15 @@ class GuzzleHttpAdapter implements AdapterInterface
     {
         $body = (string) $this->response->getBody();
         $code = (int) $this->response->getStatusCode();
-        $content = json_decode($body);
+        $content = json_decode((string) $this->response->getBody());
 
-        $message = $content->errors[0] ?? $content ?? $this->response->getReasonPhrase() ?? $body;
+        $message = $content->errors[0]->description ?? $content ?? $this->response->getReasonPhrase() ?? $body;
 
         $item = array(
             'success' => false,
             'code' => $code,
             'errors' => $message);
 
-        throw new HttpException(json_encode($item), $code);
+        throw new HttpException(json_encode($item, JSON_UNESCAPED_UNICODE), $code);
     }
 }
