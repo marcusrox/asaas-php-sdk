@@ -2,14 +2,14 @@
 
 namespace Adrianovcar\Asaas\Api;
 
-use Adrianovcar\Asaas\Exception\HttpException;
+use Exception;
 
 /**
  * Payment API Endpoint
  *
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-class PixQrCode extends \Adrianovcar\Asaas\Api\AbstractApi
+class PixQrCode extends AbstractApi
 {
     /**
      * Create a new Static PIX QR CODE
@@ -19,8 +19,10 @@ class PixQrCode extends \Adrianovcar\Asaas\Api\AbstractApi
      * @param float $value Valor do QrCode, caso não informado o pagador poderá escolher o valor
      *
      * @return string
+     *
+     * @throws Exception
      */
-    public function create($addressKey, $description, $value)
+    public function create(string $addressKey, string $description, float $value): string
     {
         $data = [
             "addressKey" => $addressKey,
@@ -30,8 +32,8 @@ class PixQrCode extends \Adrianovcar\Asaas\Api\AbstractApi
 
         try {
             return $this->adapter->post(sprintf('%s/pix/qrCodes/static', $this->endpoint), $data);
-        } catch (HttpException $e) {
-            return $e->getMessage();
+        } catch (Exception $e) {
+            return $this->dispatchException($e);
         }
     }
 }
