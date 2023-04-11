@@ -74,7 +74,7 @@ class Asaas
      *
      * @return  Payment
      */
-    public function payment()
+    public function payment(): Payment
     {
         return new Payment($this->adapter, $this->ambiente);
     }
