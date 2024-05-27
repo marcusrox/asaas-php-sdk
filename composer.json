@@ -8,7 +8,7 @@
     "authors": [
         {
             "name"    : "Adriano Carrijo",
-            "email"   : "contato@moblu.es",
+            "email"   : "adriano@moblu.es",
             "homepage": "https://moblu.es"
         },
         {
@@ -24,7 +24,8 @@
     "require-dev": {
         "kriswallsmith/buzz": "~0.10",
         "guzzle/guzzle"     : "~3.7",
-        "guzzlehttp/guzzle" : "^7.0"
+        "guzzlehttp/guzzle" : "^7.0",
+        "pestphp/pest": "3.x-dev"
     },
     "suggest": {
         "kriswallsmith/buzz": "To use BuzzAdapter, require kriswallsmith/buzz:~0.10.",
@@ -36,5 +37,10 @@
             "Adrianovcar\\Asaas\\": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
 }
