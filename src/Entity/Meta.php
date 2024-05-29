@@ -1,25 +1,16 @@
 <?php
+
 namespace Adrianovcar\Asaas\Entity;
 
 /**
  * Base Meta Entity
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-final class Meta extends \Adrianovcar\Asaas\Entity\AbstractEntity
+final class Meta extends AbstractEntity
 {
-    /**
-     * @var int
-     */
-    public $limit;
-
-    /**
-     * @var int
-     */
-    public $offset;
-
-    /**
-     * @var boolean
-     */
-    public $hasMore;
+    public int $limit;
+    public int $offset;
+    public bool $hasMore;
 }

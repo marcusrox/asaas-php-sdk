@@ -21,6 +21,10 @@ abstract class AbstractEntity
     public function __construct($parameters = null)
     {
         if (!$parameters) {
+            if (property_exists($this, 'id')) {
+                $this->id = null;
+            }
+
             return;
         }
 
@@ -40,7 +44,9 @@ abstract class AbstractEntity
     {
         foreach ($parameters as $property => $value) {
             if (property_exists($this, $property)) {
-                $this->$property = $value;
+                if ($value) {
+                    $this->$property = $value;
+                }
 
                 // Apply mutator
 

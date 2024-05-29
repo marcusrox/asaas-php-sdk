@@ -10,7 +10,7 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class City extends AbstractEntity
 {
-    public int $id;
+    public ?int $id;
     public int $ibgeCode;
     public string $name;
     public int $districtCode;

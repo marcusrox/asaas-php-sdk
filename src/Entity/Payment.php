@@ -10,7 +10,7 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Payment extends AbstractEntity
 {
-    public int $id;
+    public ?int $id;
     public string $customer;
     public string $subscription;
     public string $externalReference;

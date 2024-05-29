@@ -13,7 +13,7 @@ final class Customer extends AbstractEntity
     /**
      * ASAAS internal ID, example "cus_000005075481"
      */
-    public string $id;
+    public ?string $id;
     public string $name;
     public string $externalReference;
     public string $email;

@@ -10,7 +10,7 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Subscription extends AbstractEntity
 {
-    public int $id;
+    public ?int $id;
     public string $customer;
     public float $value;
     public float $grossValue;

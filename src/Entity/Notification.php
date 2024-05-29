@@ -10,7 +10,7 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Notification extends AbstractEntity
 {
-    public int $id;
+    public ?int $id;
     public string $customer;
     public string $event;
     public int $scheduleOffset;
