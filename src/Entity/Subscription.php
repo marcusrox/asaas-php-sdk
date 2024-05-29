@@ -1,181 +1,60 @@
 <?php
+
 namespace Adrianovcar\Asaas\Entity;
 
 /**
  * Subscription Entity
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-final class Subscription extends \Adrianovcar\Asaas\Entity\AbstractEntity
+final class Subscription extends AbstractEntity
 {
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $customer;
-
-    /**
-     * @var float
-     */
-    public $value;
-
-    /**
-     * @var float
-     */
-    public $grossValue;
-
-    /**
-     * @var string
-     */
-    public $nextDueDate;
-
-    /**
-     * @var string
-     */
-    public $cycle;
-
-    /**
-     * @var string
-     */
-    public $billingType;
-
-    /**
-     * @var string
-     */
-    public $description;
-
-    /**
-     * @var bool
-     */
-    public $updatePendingPayments;
-
-    /**
-     * @var array
-     */
-    public $payments = [];
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderName;
-
-    /**
-     * @var string
-     */
-    public $creditCardNumber;
-
-    /**
-     * @var string
-     */
-    public $creditCardExpiryMonth;
-
-    /**
-     * @var string
-     */
-    public $creditCardExpiryYear;
-
-    /**
-     * @var string
-     */
-    public $creditCardCcv;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderFullName;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderEmail;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderCpfCnpj;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderAddress;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderAddressNumber;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderAddressComplement;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderProvince;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderCity;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderUf;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderPostalCode;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderPhone;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderPhoneDDD;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderMobilePhone;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderMobilePhoneDDD;
-
-    /**
-     * @var int
-     */
-    public $maxPayments;
-
-    /**
-     * @var string
-     */
-    public $endDate;
+    public int $id;
+    public string $customer;
+    public float $value;
+    public float $grossValue;
+    public string $nextDueDate;
+    public string $cycle;
+    public string $billingType;
+    public string $description;
+    public bool $updatePendingPayments;
+    public array $payments = [];
+    public string $creditCardHolderName;
+    public string $creditCardNumber;
+    public string $creditCardExpiryMonth;
+    public string $creditCardExpiryYear;
+    public string $creditCardCcv;
+    public string $creditCardHolderFullName;
+    public string $creditCardHolderEmail;
+    public string $creditCardHolderCpfCnpj;
+    public string $creditCardHolderAddress;
+    public string $creditCardHolderAddressNumber;
+    public string $creditCardHolderAddressComplement;
+    public string $creditCardHolderProvince;
+    public string $creditCardHolderCity;
+    public string $creditCardHolderUf;
+    public string $creditCardHolderPostalCode;
+    public string $creditCardHolderPhone;
+    public string $creditCardHolderPhoneDDD;
+    public string $creditCardHolderMobilePhone;
+    public string $creditCardHolderMobilePhoneDDD;
+    public int $maxPayments;
+    public string $endDate;
 
     /**
      * @param  string  $nextDueDate
      */
-    public function setNextDueDate($nextDueDate)
+    public function setNextDueDate(string $nextDueDate)
     {
-        $this->nextDueDate = static::convertDateTime($nextDueDate);
+        $this->nextDueDate = Subscription::convertDateTime($nextDueDate);
     }
 
     /**
      * @param  string  $endDate
      */
-    public function setEndDate($endDate)
+    public function setEndDate(string $endDate)
     {
-        $this->endDate = static::convertDateTime($endDate);
+        $this->endDate = Subscription::convertDateTime($endDate);
     }
 }
