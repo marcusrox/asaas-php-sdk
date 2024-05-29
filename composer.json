@@ -1,19 +1,26 @@
 {
-    "name"       : "adrianovcar/asaas-php-sdk",
-    "type"       : "library",
+    "name": "adrianovcar/asaas-php-sdk",
+    "type": "library",
     "description": "Asaas.com PHP API v3 Wrapper",
-    "keywords"   : ["Asaas", "API", "Payment SaaS", "Credit Card", "Boleto", "PIX"],
-    "homepage"   : "https://github.com/adrianovcar/asaas-php-sdk",
-    "license"    : "MIT",
+    "keywords": [
+        "Asaas",
+        "API",
+        "Payment SaaS",
+        "Credit Card",
+        "Boleto",
+        "PIX"
+    ],
+    "homepage": "https://github.com/adrianovcar/asaas-php-sdk",
+    "license": "MIT",
     "authors": [
         {
-            "name"    : "Adriano Carrijo",
-            "email"   : "adriano@moblu.es",
+            "name": "Adriano Carrijo",
+            "email": "adrianovieirac@gmail.com",
             "homepage": "https://moblu.es"
         },
         {
-            "name"    : "Agência Softr",
-            "email"   : "agencia.softr@gmail.com",
+            "name": "Agência Softr",
+            "email": "agencia.softr@gmail.com",
             "homepage": "http://www.softr.com.br"
         }
     ],
@@ -22,16 +29,12 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "kriswallsmith/buzz": "~1.0",
-        "guzzle/guzzle"     : "^3.7",
-        "guzzlehttp/guzzle" : "^7.0",
+        "guzzlehttp/guzzle": "^7.0",
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-faker": "2.x-dev"
     },
     "suggest": {
-        "kriswallsmith/buzz": "To use BuzzAdapter, require kriswallsmith/buzz:~1.0.",
-        "guzzle/guzzle"     : "To use GuzzleAdapter, require guzzle/guzzle:^3.7.",
-        "guzzlehttp/guzzle" : "To use GuzzleHttpAdapter, require guzzlehttp/guzzle:^7.0."
+        "guzzlehttp/guzzle": "To use GuzzleHttpAdapter, require guzzlehttp/guzzle:^7.0."
     },
     "autoload": {
         "psr-4": {
