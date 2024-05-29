@@ -17,7 +17,7 @@ $asaas = new Asaas($adapter, 'sandbox');
 
 test('init asaas class', function () use ($asaas, $adapter) {
     $null_user = $asaas->customer()->getByEmail('user@notexists.com');
-    expect($null_user)->toBeNull();
+    expect($null_user->id)->toBeNull();
 });
 
 test('list all users', function () use ($asaas, $adapter) {
