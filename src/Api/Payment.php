@@ -2,13 +2,13 @@
 
 namespace Adrianovcar\Asaas\Api;
 
-// Entities
 use Adrianovcar\Asaas\Entity\Payment as PaymentEntity;
 use Exception;
 
 /**
  * Payment API Endpoint
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
 class Payment extends AbstractApi
@@ -16,7 +16,7 @@ class Payment extends AbstractApi
     /**
      * Get all payments
      *
-     * @param array $filters (optional) Filters Array
+     * @param  array  $filters  (optional) Filters Array
      * @return  array  Payments Array
      *
      * @throws Exception
@@ -39,7 +39,7 @@ class Payment extends AbstractApi
     /**
      * Get Payment By ID
      *
-     * @param string $id Payment ID
+     * @param  string  $id  Payment ID
      * @return  PaymentEntity
      *
      * @throws Exception
@@ -59,8 +59,8 @@ class Payment extends AbstractApi
     /**
      * Get Payments By Customer ID
      *
-     * @param string $customerId Customer ID
-     * @param array $filters (optional) Filters Array
+     * @param  string  $customerId  Customer ID
+     * @param  array  $filters  (optional) Filters Array
      * @return  PaymentEntity[]
      *
      * @throws Exception
@@ -83,8 +83,8 @@ class Payment extends AbstractApi
     /**
      * Get Payments By Subscription ID
      *
-     * @param string $subscriptionId Subscription ID
-     * @param array $filters (optional) Filters Array
+     * @param  string  $subscriptionId  Subscription ID
+     * @param  array  $filters  (optional) Filters Array
      * @return  PaymentEntity[]
      *
      * @throws Exception
@@ -107,7 +107,7 @@ class Payment extends AbstractApi
     /**
      * Create New Payment
      *
-     * @param array $data Payment Data
+     * @param  array  $data  Payment Data
      * @return  PaymentEntity
      * @throws Exception
      */
@@ -126,7 +126,7 @@ class Payment extends AbstractApi
     /**
      * Create a new PIX QRCODE for a given payment
      *
-     * @param string $payment_id Asaas Payment ID
+     * @param  string  $payment_id  Asaas Payment ID
      * @return array
      * @throws Exception
      */
@@ -144,12 +144,12 @@ class Payment extends AbstractApi
     /**
      * Update Payment By ID
      *
-     * @param string $id Payment ID
-     * @param array $data Payment Data
+     * @param  string  $id  Payment ID
+     * @param  array  $data  Payment Data
      * @return  PaymentEntity
      * @throws Exception
      */
-    public function update(string $id, array $data)
+    public function update(string $id, array $data): PaymentEntity
     {
         try {
             $payment = $this->adapter->post(sprintf('%s/payments/%s', $this->endpoint, $id), $data);
@@ -164,7 +164,7 @@ class Payment extends AbstractApi
     /**
      * Delete Payment By ID
      *
-     * @param string|int $id Payment ID
+     * @param  string|int  $id  Payment ID
      * @throws Exception
      *
      */

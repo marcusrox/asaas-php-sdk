@@ -1,213 +1,60 @@
 <?php
+
 namespace Adrianovcar\Asaas\Entity;
 
 /**
  * Payment Entity
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-final class Payment extends \Adrianovcar\Asaas\Entity\AbstractEntity
+final class Payment extends AbstractEntity
 {
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $customer;
-
-    /**
-     * @var string
-     */
-    public $subscription;
-
-    /**
-     * @var string
-     */
-    public $externalReference;
-
-    /**
-     * @var string
-     */
-    public $billingType;
-
-    /**
-     * @var float
-     */
-    public $value;
-
-    /**
-     * @var float
-     */
-    public $netValue;
-
-    /**
-     * @var float
-     */
-    public $originalValue;
-
-    /**
-     * @var float
-     */
-    public $interestValue;
-
-    /**
-     * @var float
-     */
-    public $grossValue;
-
-    /**
-     * @var string
-     */
-    public $dueDate;
-
-    /**
-     * @var string
-     */
-    public $status;
-
-    /**
-     * @var string
-     */
-    public $nossoNumero;
-
-    /**
-     * @var string
-     */
-    public $description;
-
-    /**
-     * @var string
-     */
-    public $invoiceNumber;
-
-    /**
-     * @var string
-     */
-    public $invoiceUrl;
-
-    /**
-     * @var string
-     */
-    public $boletoUrl;
-
-    /**
-     * @var int
-     */
-    public $installmentCount;
-
-    /**
-     * @var bool
-     */
-    public $postalService;
-
-    /**
-     * @var float
-     */
-    public $installmentValue;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderName;
-
-    /**
-     * @var string
-     */
-    public $creditCardNumber;
-
-    /**
-     * @var string
-     */
-    public $creditCardExpiryMonth;
-
-    /**
-     * @var string
-     */
-    public $creditCardExpiryYear;
-
-    /**
-     * @var string
-     */
-    public $creditCardCcv;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderFullName;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderEmail;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderCpfCnpj;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderAddress;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderAddressNumber;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderAddressComplement;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderProvince;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderCity;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderUf;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderPostalCode;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderPhone;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderPhoneDDD;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderMobilePhone;
-
-    /**
-     * @var string
-     */
-    public $creditCardHolderMobilePhoneDDD;
+    public int $id;
+    public string $customer;
+    public string $subscription;
+    public string $externalReference;
+    public string $billingType;
+    public float $value;
+    public float $netValue;
+    public float $originalValue;
+    public float $interestValue;
+    public float $grossValue;
+    public string $dueDate;
+    public string $status;
+    public string $nossoNumero;
+    public string $description;
+    public string $invoiceNumber;
+    public string $invoiceUrl;
+    public string $boletoUrl;
+    public int $installmentCount;
+    public bool $postalService;
+    public float $installmentValue;
+    public string $creditCardHolderName;
+    public string $creditCardNumber;
+    public string $creditCardExpiryMonth;
+    public string $creditCardExpiryYear;
+    public string $creditCardCcv;
+    public string $creditCardHolderFullName;
+    public string $creditCardHolderEmail;
+    public string $creditCardHolderCpfCnpj;
+    public string $creditCardHolderAddress;
+    public string $creditCardHolderAddressNumber;
+    public string $creditCardHolderAddressComplement;
+    public string $creditCardHolderProvince;
+    public string $creditCardHolderCity;
+    public string $creditCardHolderUf;
+    public string $creditCardHolderPostalCode;
+    public string $creditCardHolderPhone;
+    public string $creditCardHolderPhoneDDD;
+    public string $creditCardHolderMobilePhone;
+    public string $creditCardHolderMobilePhoneDDD;
 
     /**
      * @param  string  $dueDate
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(string $dueDate): void
     {
-        $this->dueDate = static::convertDateTime($dueDate);
+        $this->dueDate = Payment::convertDateTime($dueDate);
     }
 }
