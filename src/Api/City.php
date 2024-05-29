@@ -2,7 +2,6 @@
 
 namespace Adrianovcar\Asaas\Api;
 
-// Entities
 use Adrianovcar\Asaas\Entity\City as CityEntity;
 use Exception;
 
@@ -16,7 +15,7 @@ class City extends AbstractApi
     /**
      * Get all cities
      *
-     * @param array $filters (optional) Filters Array
+     * @param  array  $filters  (optional) Filters Array
      * @return  array  Cities Array
      *
      * @throws Exception
@@ -39,7 +38,7 @@ class City extends AbstractApi
     /**
      * Get City By ID
      *
-     * @param int $id City ID
+     * @param  int  $id  City ID
      * @return CityEntity
      *
      * @throws Exception
