@@ -2,14 +2,11 @@
 
 namespace Adrianovcar\Asaas;
 
-
-// API's
 use Adrianovcar\Asaas\Adapter\AdapterInterface;
 use Adrianovcar\Asaas\Api\City;
 use Adrianovcar\Asaas\Api\Customer;
 use Adrianovcar\Asaas\Api\Notification;
 use Adrianovcar\Asaas\Api\Payment;
-use Adrianovcar\Asaas\Api\Pix;
 use Adrianovcar\Asaas\Api\PixKey;
 use Adrianovcar\Asaas\Api\PixQrCode;
 use Adrianovcar\Asaas\Api\Subscription;
@@ -18,6 +15,7 @@ use Adrianovcar\Asaas\Api\Subscription;
 /**
  * Asass API Wrapper
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
 class Asaas
@@ -27,26 +25,25 @@ class Asaas
      *
      * @var  AdapterInterface
      */
-    protected $adapter;
+    protected AdapterInterface $adapter;
 
     /**
      * Ambiente da API
      *
      * @var  string
      */
-    protected $ambiente;
+    protected string $ambiente;
 
     /**
      * Constructor
      *
      * @param AdapterInterface $adapter Adapter Instance
-     * @param string $ambiente (optional) Ambiente da API
+     * @param string $environment (optional) api environment
      */
-    public function __construct(AdapterInterface $adapter, $ambiente = 'producao')
+    public function __construct(AdapterInterface $adapter, string $environment = 'production')
     {
         $this->adapter = $adapter;
-
-        $this->ambiente = $ambiente;
+        $this->ambiente = $environment;
     }
 
     /**
@@ -64,7 +61,7 @@ class Asaas
      *
      * @return  Subscription
      */
-    public function subscription()
+    public function subscription(): Subscription
     {
         return new Subscription($this->adapter, $this->ambiente);
     }
@@ -84,7 +81,7 @@ class Asaas
      *
      * @return  Notification
      */
-    public function notification()
+    public function notification(): Notification
     {
         return new Notification($this->adapter, $this->ambiente);
     }
@@ -94,17 +91,27 @@ class Asaas
      *
      * @return  City
      */
-    public function city()
+    public function city(): City
     {
         return new City($this->adapter, $this->ambiente);
     }
 
-    public function pixKey()
+    /**
+     * Get Pix key code
+     *
+     * @return  PixKey
+     */
+    public function pixKey(): PixKey
     {
         return new PixKey($this->adapter, $this->ambiente);
     }
 
-    public function pixQrCode()
+    /**
+     * Get Pix QrCode
+     *
+     * @return  PixQrCode
+     */
+    public function pixQrCode(): PixQrCode
     {
         return new PixQrCode($this->adapter, $this->ambiente);
     }

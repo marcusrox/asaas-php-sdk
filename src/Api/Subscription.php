@@ -1,32 +1,30 @@
 <?php
+
 namespace Adrianovcar\Asaas\Api;
 
-// Entities
 use Adrianovcar\Asaas\Entity\Subscription as SubscriptionEntity;
 
 /**
  * Subscription API Endpoint
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-class Subscription extends \Adrianovcar\Asaas\Api\AbstractApi
+class Subscription extends AbstractApi
 {
     /**
      * Get all subscriptions
      *
-     * @param   array  $filters  (optional) Filters Array
+     * @param  array  $filters  (optional) Filters Array
      * @return  array  Subscriptions Array
      */
-    public function getAll(array $filters = [])
+    public function getAll(array $filters = []): array
     {
         $subscriptions = $this->adapter->get(sprintf('%s/subscriptions?%s', $this->endpoint, http_build_query($filters)));
-
         $subscriptions = json_decode($subscriptions);
-
         $this->extractMeta($subscriptions);
 
-        return array_map(function($subscription)
-        {
+        return array_map(function ($subscription) {
             return new SubscriptionEntity($subscription->subscription);
         }, $subscriptions->data);
     }
@@ -34,13 +32,12 @@ class Subscription extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Get Subscription By Id
      *
-     * @param   int  $id  Subscription Id
+     * @param  string  $id  Subscription Id
      * @return  SubscriptionEntity
      */
-    public function getById($id)
+    public function getById(string $id): SubscriptionEntity
     {
         $subscription = $this->adapter->get(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
-
         $subscription = json_decode($subscription);
 
         return new SubscriptionEntity($subscription);
@@ -49,20 +46,16 @@ class Subscription extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Get Subscriptions By Customer Id
      *
-     * @param   int  $customerId  Customer Id
-     * @param   array  $filters  (optional) Filters Array
-     * @return  SubscriptionEntity
+     * @param  string  $customerId  Customer Id
+     * @return  SubscriptionEntity[]
      */
-    public function getByCustomer($customerId)
+    public function getByCustomer(string $customerId): array
     {
         $subscriptions = $this->adapter->get(sprintf('%s/customers/%s/subscriptions?%s', $this->endpoint, $customerId, http_build_query($filters)));
-
         $subscriptions = json_decode($subscriptions);
-
         $this->extractMeta($subscriptions);
 
-        return array_map(function($subscription)
-        {
+        return array_map(function ($subscription) {
             return new SubscriptionEntity($subscription->subscription);
         }, $subscriptions->data);
     }
@@ -70,13 +63,12 @@ class Subscription extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Create new subscription
      *
-     * @param   array  $data  Subscription Data
+     * @param  array  $data  Subscription Data
      * @return  SubscriptionEntity
      */
-    public function create(array $data)
+    public function create(array $data): SubscriptionEntity
     {
         $subscription = $this->adapter->post(sprintf('%s/subscriptions', $this->endpoint), $data);
-
         $subscription = json_decode($subscription);
 
         return new SubscriptionEntity($subscription);
@@ -85,14 +77,13 @@ class Subscription extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Update Subscription By Id
      *
-     * @param   string  $id    Subscription Id
-     * @param   array   $data  Subscription Data
+     * @param  string  $id  Subscription Id
+     * @param  array  $data  Subscription Data
      * @return  SubscriptionEntity
      */
-    public function update($id, array $data)
+    public function update(string $id, array $data): SubscriptionEntity
     {
         $subscription = $this->adapter->post(sprintf('%s/subscriptions/%s', $this->endpoint, $id), $data);
-
         $subscription = json_decode($subscription);
 
         return new SubscriptionEntity($subscription);

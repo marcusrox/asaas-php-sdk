@@ -1,18 +1,16 @@
 <?php
+
 namespace Adrianovcar\Asaas\Adapter;
 
-// Asaas
 use Adrianovcar\Asaas\Exception\HttpException;
-
-// Guzzle
 use Guzzle\Http\Client;
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Exception\RequestException;
 
-
 /**
  * Guzzle Adapter
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
 class GuzzleAdapter implements AdapterInterface
@@ -27,17 +25,16 @@ class GuzzleAdapter implements AdapterInterface
     /**
      * Command Response
      *
-     * @var Response
      */
     protected $response;
 
     /**
      * Constructor
      *
-     * @param  string                $token   Access Token
+     * @param  string  $token  Access Token
      * @param  ClientInterface|null  $client  Client Instance
      */
-    public function __construct($token, ClientInterface $client = null)
+    public function __construct(string $token, ClientInterface $client = null)
     {
         $this->client = $client ?: new Client();
 
@@ -47,96 +44,16 @@ class GuzzleAdapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function get($url)
+    public function get(string $url): string
     {
-        try
-        {
+        try {
             $this->response = $this->client->get($url)->send();
-        }
-        catch(RequestException $e)
-        {
+        } catch (RequestException $e) {
             $this->response = $e->getResponse();
             $this->handleError();
         }
 
         return $this->response->getBody(true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($url)
-    {
-        try
-        {
-            $this->response = $this->client->delete($url)->send();
-        }
-        catch(RequestException $e)
-        {
-            $this->response = $e->getResponse();
-            $this->handleError();
-        }
-
-        return $this->response->getBody(true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function put($url, $content = '')
-    {
-        $request = $this->client->put($url, [], $content);
-
-        try
-        {
-            $this->response = $request->send();
-        }
-        catch(RequestException $e)
-        {
-            $this->response = $e->getResponse();
-
-            $this->handleError();
-        }
-
-        return $this->response->getBody(true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function post($url, $content = '')
-    {
-        $request = $this->client->post($url, [], $content);
-
-        try
-        {
-            $this->response = $request->send();
-        }
-        catch(RequestException $e)
-        {
-            $this->response = $e->getResponse();
-
-            $this->handleError();
-        }
-
-        return $this->response->getBody(true);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatestResponseHeaders()
-    {
-        if(null === $this->response)
-        {
-            return;
-        }
-
-        return [
-            'reset'     => (int) (string) $this->response->getHeader('RateLimit-Reset'),
-            'remaining' => (int) (string) $this->response->getHeader('RateLimit-Remaining'),
-            'limit'     => (int) (string) $this->response->getHeader('RateLimit-Limit'),
-        ];
     }
 
     /**
@@ -149,6 +66,73 @@ class GuzzleAdapter implements AdapterInterface
 
         $content = json_decode($body);
 
-        throw new HttpException(isset($content->message) ? $content->message : 'Request not processed.', $code);
+        throw new HttpException($content->message ?? 'Request not processed.', $code);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(string $url): string
+    {
+        try {
+            $this->response = $this->client->delete($url)->send();
+        } catch (RequestException $e) {
+            $this->response = $e->getResponse();
+            $this->handleError();
+        }
+
+        return $this->response->getBody(true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function put(string $url, $content = ''): string
+    {
+        $request = $this->client->put($url, [], $content);
+
+        try {
+            $this->response = $request->send();
+        } catch (RequestException $e) {
+            $this->response = $e->getResponse();
+
+            $this->handleError();
+        }
+
+        return $this->response->getBody(true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function post(string $url, $content = ''): string
+    {
+        $request = $this->client->post($url, [], $content);
+
+        try {
+            $this->response = $request->send();
+        } catch (RequestException $e) {
+            $this->response = $e->getResponse();
+
+            $this->handleError();
+        }
+
+        return $this->response->getBody(true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLatestResponseHeaders(): ?array
+    {
+        if (null === $this->response) {
+            return null;
+        }
+
+        return [
+            'reset' => (int) (string) $this->response->getHeader('RateLimit-Reset'),
+            'remaining' => (int) (string) $this->response->getHeader('RateLimit-Remaining'),
+            'limit' => (int) (string) $this->response->getHeader('RateLimit-Limit'),
+        ];
     }
 }

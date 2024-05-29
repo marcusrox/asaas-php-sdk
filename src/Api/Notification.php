@@ -1,32 +1,30 @@
 <?php
+
 namespace Adrianovcar\Asaas\Api;
 
-// Entities
 use Adrianovcar\Asaas\Entity\Notification as NotificationEntity;
 
 /**
  * Notification API Endpoint
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-class Notification extends \Adrianovcar\Asaas\Api\AbstractApi
+class Notification extends AbstractApi
 {
     /**
      * Get all notifications
      *
-     * @param   array  $filters  (optional) Filters Array
+     * @param  array  $filters  (optional) Filters Array
      * @return  array
      */
-    public function getAll(array $filters = [])
+    public function getAll(array $filters = []): array
     {
         $notifications = $this->adapter->get(sprintf('%s/notifications?%s', $this->endpoint, http_build_query($filters)));
-
         $notifications = json_decode($notifications);
-
         $this->extractMeta($notifications);
 
-        return array_map(function($notification)
-        {
+        return array_map(function ($notification) {
             return new NotificationEntity($notification);
         }, $notifications->data);
     }
@@ -34,13 +32,12 @@ class Notification extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Get Notification By Id
      *
-     * @param   int  $id  Notification's Id
+     * @param  int  $id  Notification's Id
      * @return  NotificationEntity
      */
-    public function getById($id)
+    public function getById(int $id): NotificationEntity
     {
         $notification = $this->adapter->get(sprintf('%s/notifications/%s', $this->endpoint, $id));
-
         $notification = json_decode($notification);
 
         return new NotificationEntity($notification->customer);
@@ -49,20 +46,17 @@ class Notification extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Get Notifications By Customer Id
      *
-     * @param   int    $id       Customer Id
-     * @param   array  $filters  (optional) Filters Array
+     * @param  string  $customerId  Customer Id
+     * @param  array  $filters  (optional) Filters Array
      * @return  array
      */
-    public function getByCustomer($customerId, array $filters = [])
+    public function getByCustomer(string $customerId, array $filters = []): array
     {
         $notifications = $this->adapter->get(sprintf('%s/customers/%s/notifications?%s', $this->endpoint, $customerId, http_build_query($filters)));
-
         $notifications = json_decode($notifications);
-
         $this->extractMeta($notifications);
 
-        return array_map(function($notification)
-        {
+        return array_map(function ($notification) {
             return new NotificationEntity($notification->notification);
         }, $notifications->data);
     }
@@ -70,13 +64,12 @@ class Notification extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Create New Notification
      *
-     * @param   array  $data  Notification's Data
+     * @param  array  $data  Notification's Data
      * @return  NotificationEntity
      */
-    public function create(array $data)
+    public function create(array $data): NotificationEntity
     {
         $notification = $this->adapter->post(sprintf('%s/notifications', $this->endpoint), $data);
-
         $notification = json_decode($notification);
 
         return new NotificationEntity($notification);
@@ -85,14 +78,13 @@ class Notification extends \Adrianovcar\Asaas\Api\AbstractApi
     /**
      * Update Notification By Id
      *
-     * @param   string  $id    Notification's Id
-     * @param   array   $data  Notification's Data
+     * @param  string  $id  Notification's Id
+     * @param  array  $data  Notification's Data
      * @return  NotificationEntity
      */
-    public function update($id, array $data)
+    public function update(string $id, array $data): NotificationEntity
     {
         $notification = $this->adapter->post(sprintf('%s/notifications/%s', $this->endpoint, $id), $data);
-
         $notification = json_decode($notification);
 
         return new NotificationEntity($notification);

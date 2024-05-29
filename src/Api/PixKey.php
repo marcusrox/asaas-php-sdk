@@ -6,8 +6,9 @@ use Adrianovcar\Asaas\Entity\Customer as CustomerEntity;
 use Exception;
 
 /**
- * Payment API Endpoint
+ * PixKey API Endpoint
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
 class PixKey extends AbstractApi
@@ -37,7 +38,7 @@ class PixKey extends AbstractApi
      * offset (int) Elemento inicial da lista
      * limit (number) Número de elementos da lista (max: 100)
      *
-     * @param array $filters (optional) Filters Array
+     * @param  array  $filters  (optional) Filters Array
      * @return  array  Customers Array
      *
      * @throws Exception
@@ -63,12 +64,12 @@ class PixKey extends AbstractApi
      * Get key by ID
      * Keys are needed to create a new Pix payment
      *
-     * @param $id
+     * @param  string  $id
      * @return  string
      *
      * @throws Exception
      */
-    public function getById($id): string
+    public function getById(string $id): string
     {
         try {
             return $this->adapter->get(sprintf('%s/pix/addressKeys/%s', $this->endpoint, $id));

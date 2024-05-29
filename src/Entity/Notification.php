@@ -1,55 +1,22 @@
 <?php
+
 namespace Adrianovcar\Asaas\Entity;
 
 /**
  * Notification Entity
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-final class Notification extends \Adrianovcar\Asaas\Entity\AbstractEntity
+final class Notification extends AbstractEntity
 {
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $customer;
-
-    /**
-     * @var string
-     */
-    public $event;
-
-    /**
-     * @var int
-     */
-    public $scheduleOffset;
-
-    /**
-     * @var bool
-     */
-    public $emailEnabledForProvider;
-
-    /**
-     * @var bool
-     */
-    public $smsEnabledForProvider;
-
-    /**
-     * @var bool
-     */
-    public $emailEnabledForCustomer;
-
-    /**
-     * @var bool
-     */
-    public $smsEnabledForCustomer;
-
-    /**
-     * @var bool
-     */
-    public $enabled;
+    public ?int $id;
+    public string $customer;
+    public string $event;
+    public int $scheduleOffset;
+    public bool $emailEnabledForProvider;
+    public bool $smsEnabledForProvider;
+    public bool $emailEnabledForCustomer;
+    public bool $smsEnabledForCustomer;
+    public bool $enabled;
 }

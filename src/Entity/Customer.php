@@ -1,116 +1,51 @@
 <?php
+
 namespace Adrianovcar\Asaas\Entity;
 
 /**
  * Customer Entity
  *
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  * @author Agência Softr <agencia.softr@gmail.com>
  */
-final class Customer extends \Adrianovcar\Asaas\Entity\AbstractEntity
+final class Customer extends AbstractEntity
 {
     /**
      * ASAAS internal ID, example "cus_000005075481"
      */
-    public $id;
-    /**
-     * @var string
-     */
-    public $name;
-    /**
-     * @var string
-     */
-    public $externalReference;
-    /**
-     * @var string
-     */
-    public $email;
-    /**
-     * @var string
-     */
-    public $company;
-    /**
-     * @var string
-     */
-    public $phone;
-    /**
-     * @var string
-     */
-    public $mobilePhone;
-
+    public ?string $id;
+    public string $name;
+    public string $externalReference;
+    public string $email;
+    public string $company;
+    public string $phone;
+    public string $mobilePhone;
     /**
      * Aditional email for sending notifications, comma separeted ","
-     * @var string
      */
-    public $additionalEmails;
-
+    public string $additionalEmails;
+    public string $municipalInscription;
+    public string $address;
+    public string $addressNumber;
+    public string $complement;
     /**
-     * When the customer is a company
+     * neighborhood
      */
-    public $municipalInscription;
+    public string $province;
+    public bool $notificationDisabled = true;
+    public string $city;
+    public string $state;
+    public string $country;
+    public string $postalCode;
     /**
-     * @var string
+     * This is a required field
      */
-    public $address;
-    /**
-     * @var string
-     */
-    public $addressNumber;
-    /**
-     * @var string
-     */
-    public $complement;
-    /**
-     * @var string
-     */
-    public $province;
-    /**
-     * @var bool
-     */
-    public $foreignCustomer = false;
-    /**
-     * @var bool
-     */
-    public $notificationDisabled = true;
-    /**
-     * @var string
-     */
-    public $city;
-    /**
-     * @var string
-     */
-    public $state;
-    /**
-     * @var string
-     */
-    public $country;
-    /**
-     * @var string
-     */
-    public $postalCode;
-    /**
-     * @var string
-     */
-    public $cpfCnpj;
-    /**
-     * Person or Company, don't send to new customer
-     * @var string
-     */
-    public $personType;
-    /**
-     * @var array
-     */
+    public string $cpfCnpj;
     public array $subscriptions = [];
-    /**
-     * @var array
-     */
     public array $payments = [];
-    /**
-     * @var array
-     */
     public array $notifications = [];
     /**
      * When a customer was deleted from ASAAS
-     * @var bool
      */
-    public $deleted = false;
+    public bool $deleted = false;
 }
