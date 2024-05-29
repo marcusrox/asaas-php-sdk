@@ -1,14 +1,17 @@
 <?php
+
 namespace Adrianovcar\Asaas\Api;
 
 use Adrianovcar\Asaas\Adapter\AdapterInterface;
 use Adrianovcar\Asaas\Entity\Meta;
-use Adrianovcar\Asaas\Exception\AsaasApiException;
+use Exception;
+use StdClass;
 
 /**
  * Abstract API
  *
  * @author Agência Softr <agencia.softr@gmail.com>
+ * @author Adriano Carrijo <adrianovieirac@gmail.com>
  */
 abstract class AbstractApi
 {
@@ -17,74 +20,51 @@ abstract class AbstractApi
      *
      * @var string
      */
-    const ENDPOINT_PRODUCAO = 'https://www.asaas.com/api/v3';
-
-    /**
-     * Endpoint Homologação
-     *
-     * @var string
-     */
-    const ENDPOINT_HOMOLOGACAO = 'http://homolog.asaas.com/api/v2';
+    const PRODUCTION_ENDPOINT = 'https://www.asaas.com/api/v3';
 
     /**
      * Endpoint Sandbox
      *
      * @var string
      */
-    const ENDPOINT_SANDBOX = 'https://sandbox.asaas.com/api/v3';
+    const SANDBOX_ENDPOINT = 'https://sandbox.asaas.com/api/v3';
 
     /**
      * Http Adapter Instance
      *
      * @var AdapterInterface
      */
-    protected $adapter;
+    protected AdapterInterface $adapter;
 
     /**
      * Api Endpoint
      *
      * @var string
      */
-    protected $endpoint;
+    protected string $endpoint;
 
     /**
      * @var Meta
      */
-    protected $meta;
+    protected Meta $meta;
 
     /**
      * Constructor
      *
-     * @param  AdapterInterface  $adapter   Adapter Instance
-     * @param  string            $ambiente  (optional) Ambiente da API
+     * @param  AdapterInterface  $adapter  Adapter Instance
+     * @param  string  $ambiente  (optional) Ambiente da API
      */
-    public function __construct(AdapterInterface $adapter, $ambiente = 'producao')
+    public function __construct(AdapterInterface $adapter, string $ambiente = 'production')
     {
         $this->adapter = $adapter;
 
         switch ($ambiente) {
-            case 'sandbox':
-                $this->endpoint = static::ENDPOINT_SANDBOX;
-                break;
-            case 'homologacao':
-                $this->endpoint = static::ENDPOINT_HOMOLOGACAO;
+            case 'production':
+                $this->endpoint = static::PRODUCTION_ENDPOINT;
                 break;
             default:
-                $this->endpoint = static::ENDPOINT_PRODUCAO;
+                $this->endpoint = static::SANDBOX_ENDPOINT;
         }
-    }
-
-    /**
-     * Extract results meta
-     *
-     * @param   \stdClass  $data  Meta data
-     * @return  Meta
-     */
-    protected function extractMeta(\StdClass $data)
-    {
-        $this->meta = new Meta($data);
-
-        return $this->meta;
     }
 
     /**
@@ -92,16 +72,29 @@ abstract class AbstractApi
      *
      * @return  Meta
      */
-    public function getMeta()
+    public function getMeta(): Meta
     {
         return $this->meta;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function dispatchException(\Exception $exception)
+    public function dispatchException(Exception $exception)
     {
-        throw new \Exception($exception->getMessage(), $exception->getCode());
+        throw new Exception($exception->getMessage(), $exception->getCode());
+    }
+
+    /**
+     * Extract results meta
+     *
+     * @param  stdClass  $data  Meta data
+     * @return  Meta
+     */
+    protected function extractMeta(StdClass $data): Meta
+    {
+        $this->meta = new Meta($data);
+
+        return $this->meta;
     }
 }
