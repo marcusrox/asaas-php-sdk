@@ -32,18 +32,18 @@ class Asaas
      *
      * @var  string
      */
-    protected string $ambiente;
+    protected string $environment;
 
     /**
      * Constructor
      *
-     * @param AdapterInterface $adapter Adapter Instance
-     * @param string $environment (optional) api environment
+     * @param  AdapterInterface  $adapter  Adapter Instance
+     * @param  string  $environment  (optional) api environment
      */
     public function __construct(AdapterInterface $adapter, string $environment = 'production')
     {
         $this->adapter = $adapter;
-        $this->ambiente = $environment;
+        $this->environment = $environment;
     }
 
     /**
@@ -53,7 +53,7 @@ class Asaas
      */
     public function customer(): Customer
     {
-        return new Customer($this->adapter, $this->ambiente);
+        return new Customer($this->adapter, $this->environment);
     }
 
     /**
@@ -63,7 +63,7 @@ class Asaas
      */
     public function subscription(): Subscription
     {
-        return new Subscription($this->adapter, $this->ambiente);
+        return new Subscription($this->adapter, $this->environment);
     }
 
     /**
@@ -73,7 +73,7 @@ class Asaas
      */
     public function payment(): Payment
     {
-        return new Payment($this->adapter, $this->ambiente);
+        return new Payment($this->adapter, $this->environment);
     }
 
     /**
@@ -83,7 +83,7 @@ class Asaas
      */
     public function notification(): Notification
     {
-        return new Notification($this->adapter, $this->ambiente);
+        return new Notification($this->adapter, $this->environment);
     }
 
     /**
@@ -93,7 +93,7 @@ class Asaas
      */
     public function city(): City
     {
-        return new City($this->adapter, $this->ambiente);
+        return new City($this->adapter, $this->environment);
     }
 
     /**
@@ -103,7 +103,7 @@ class Asaas
      */
     public function pixKey(): PixKey
     {
-        return new PixKey($this->adapter, $this->ambiente);
+        return new PixKey($this->adapter, $this->environment);
     }
 
     /**
@@ -113,6 +113,6 @@ class Asaas
      */
     public function pixQrCode(): PixQrCode
     {
-        return new PixQrCode($this->adapter, $this->ambiente);
+        return new PixQrCode($this->adapter, $this->environment);
     }
 }
