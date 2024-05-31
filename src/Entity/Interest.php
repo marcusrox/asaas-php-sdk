@@ -14,4 +14,5 @@ final class Interest extends AbstractEntity
      * @var float
      */
     public float $value;
+    public string $type;
 }
