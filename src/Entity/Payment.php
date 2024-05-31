@@ -11,44 +11,138 @@ namespace Adrianovcar\Asaas\Entity;
 final class Payment extends AbstractEntity
 {
     public ?int $id;
+    /**
+     * @var string Required field
+     */
     public string $customer;
-    public string $subscription;
-    public string $externalReference;
+    /**
+     * Required field
+     * @var string "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
+     */
     public string $billingType;
+    /**
+     * @var float Required field
+     */
     public float $value;
-    public float $netValue;
-    public float $originalValue;
-    public float $interestValue;
-    public float $grossValue;
+    /**
+     * @var float Required field
+     */
     public string $dueDate;
-    public string $status;
-    public string $nossoNumero;
     public string $description;
-    public string $invoiceNumber;
-    public string $invoiceUrl;
-    public string $boletoUrl;
+    /**
+     * @var string Days after due date to registration cancellation
+     */
+    public string $daysAfterDueDateToRegistrationCancellation;
+    public string $externalReference;
     public int $installmentCount;
-    public bool $postalService;
+    /**
+     * @var float Value for a payment that will be paid in installments (only in the case of installment payment). If this field is sent, the installmentValue field is not necessary, the calculation by installment will be automatic.
+     */
+    public float $totalValue;
+    /**
+     * @var float Value of each installment (only in the case of installment payment). Send this field in case you want to define the value of each installment.
+     */
     public float $installmentValue;
-    public string $creditCardHolderName;
-    public string $creditCardNumber;
-    public string $creditCardExpiryMonth;
-    public string $creditCardExpiryYear;
-    public string $creditCardCcv;
-    public string $creditCardHolderFullName;
-    public string $creditCardHolderEmail;
-    public string $creditCardHolderCpfCnpj;
-    public string $creditCardHolderAddress;
-    public string $creditCardHolderAddressNumber;
-    public string $creditCardHolderAddressComplement;
-    public string $creditCardHolderProvince;
-    public string $creditCardHolderCity;
-    public string $creditCardHolderUf;
-    public string $creditCardHolderPostalCode;
-    public string $creditCardHolderPhone;
-    public string $creditCardHolderPhoneDDD;
-    public string $creditCardHolderMobilePhone;
-    public string $creditCardHolderMobilePhoneDDD;
+    public Discount $discount;
+    public Interest $interest;
+    public Fine $fine;
+    public bool $postalService;
+    public array $split; // Todo: Implement split feature
+    public array $callback; // Todo: Implement callback feature
+
+
+    protected string $dateCreated;
+    /**
+     * @var string Identificador único da assinatura (quando cobrança recorrente)
+     */
+    protected string $subscription;
+    /**
+     * @var string Identificador único do link de pagamentos ao qual a cobrança pertence
+     */
+    protected string $paymentLink;
+    /**
+     * @var float Valor líquido da cobrança após desconto da tarifa do Asaas
+     */
+    protected float $netValue;
+    /**
+     * Status da cobrança
+     * @var string PENDING | RECEIVED | CONFIRMED | OVERDUE | REFUNDED | RECEIVED_IN_CASH | REFUND_REQUESTED | REFUND_IN_PROGRESS | CHARGEBACK_REQUESTED | CHARGEBACK_DISPUTE | AWAITING_CHARGEBACK_REVERSAL | DUNNING_REQUESTED | DUNNING_RECEIVED | AWAITING_RISK_ANALYSIS
+     */
+    protected string $status;
+    /**
+     * @var string Informa se a cobrança pode ser paga após o vencimento (Somente para boleto)
+     */
+    protected string $canBePaidAfterDueDate;
+    /**
+     * @var string Identificador único da transação Pix à qual a cobrança pertence
+     */
+    protected string $pixTransaction;
+    /**
+     * @var string Identificador único do QrCode estático gerado para determinada chave Pix
+     */
+    protected string $pixQrCodeId;
+    /**
+     * @var float Valor original da cobrança (preenchido quando paga com juros e multa)
+     */
+    protected float $originalValue;
+    /**
+     * @var float Valor calculado de juros e multa que deve ser pago após o vencimento da cobrança
+     */
+    protected float $interestValue;
+    /**
+     * @var string Vencimento original no ato da criação da cobrança
+     */
+    protected string $originalDueDate;
+    /**
+     * @var string Data de liquidação da cobrança no Asaas
+     */
+    protected string $paymentDate;
+    /**
+     * @var string Data em que o cliente efetuou o pagamento do boleto
+     */
+    protected string $clientPaymentDate;
+    /**
+     * @var string Número da parcela
+     */
+    protected string $installmentNumber;
+    /**
+     * @var string URL do comprovante de confirmação, recebimento, estorno ou remoção.
+     */
+    protected string $transactionReceiptUrl;
+    /**
+     * @var string Identificação única do boleto
+     */
+    protected string $nossoNumero;
+    /**
+     * @var string Identificador de cobrança duplicada (caso verdadeiro)
+     */
+    protected string $duplicatedPayment;
+    /**
+     * @var string URL da fatura
+     */
+    protected string $invoiceUrl;
+    /**
+     * @var string URL para download do boleto
+     */
+    protected string $bankSlipUrl;
+    /**
+     * @var string Número da fatura
+     */
+    protected string $invoiceNumber;
+    /**
+     * @var bool Determina se a cobrança foi removida
+     */
+    protected bool $deleted;
+    /**
+     * @var bool Define se a cobrança foi antecipada ou está em processo de antecipação
+     */
+    protected bool $anticipated;
+    /**
+     * @var bool Determina se a cobrança é antecipável
+     */
+    protected bool $anticipable;
+    protected string $refunds; // Todo: Implement refunds feature
+    protected string $chargeback; // Todo: Implement chargeback feature
 
     /**
      * @param  string  $dueDate

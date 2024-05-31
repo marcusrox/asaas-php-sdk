@@ -11,36 +11,72 @@ namespace Adrianovcar\Asaas\Entity;
 final class Subscription extends AbstractEntity
 {
     public ?int $id;
+    /**
+     * @var string Required field
+     */
     public string $customer;
-    public float $value;
-    public float $grossValue;
-    public string $nextDueDate;
-    public string $cycle;
+    /**
+     * Required field
+     * @var string "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
+     */
     public string $billingType;
+    /**
+     * @var float Required field
+     */
+    public float $value;
+    /**
+     * First installment due date
+     * @var string Required field
+     */
+    public string $nextDueDate;
+    public Discount $discount;
+    public Interest $interest;
+    public Fine $fine;
+    /**
+     * Required field
+     * @var string "WEEKLY", "BIWEEKLY", "MONTHLY", "BIMONTHLY", "QUARTERLY", "SEMIANNUALLY" or "YEARLY"
+     */
+    public string $cycle;
     public string $description;
-    public bool $updatePendingPayments;
-    public array $payments = [];
-    public string $creditCardHolderName;
-    public string $creditCardNumber;
-    public string $creditCardExpiryMonth;
-    public string $creditCardExpiryYear;
-    public string $creditCardCcv;
-    public string $creditCardHolderFullName;
-    public string $creditCardHolderEmail;
-    public string $creditCardHolderCpfCnpj;
-    public string $creditCardHolderAddress;
-    public string $creditCardHolderAddressNumber;
-    public string $creditCardHolderAddressComplement;
-    public string $creditCardHolderProvince;
-    public string $creditCardHolderCity;
-    public string $creditCardHolderUf;
-    public string $creditCardHolderPostalCode;
-    public string $creditCardHolderPhone;
-    public string $creditCardHolderPhoneDDD;
-    public string $creditCardHolderMobilePhone;
-    public string $creditCardHolderMobilePhoneDDD;
-    public int $maxPayments;
+    /**
+     * @var string Installments should be paid until this date
+     */
     public string $endDate;
+    /**
+     * @var int Maximum number of payments to be created for this subscription
+     */
+    public int $maxPayments;
+    public string $externalReference;
+    public array $split; // Todo: Implement split feature
+    public array $callback; // Todo: Implement callback feature
+    /**
+     * @var CreditCard Required if billingType is CREDIT_CARD
+     */
+    public CreditCard $creditCard;
+    /**
+     * @var CreditCardHolderInfo Required if billingType is CREDIT_CARD
+     */
+    public CreditCardHolderInfo $creditCardHolderInfo;
+    public string $creditCardToken;
+
+
+    public int $installmentCount;
+    public float $installmentValue;
+    public bool $postalService; // Define if the subscription will be sent by Postal Service
+    public string $authorizeOnly;
+    /**
+     * IP from where the customer is making the purchase. It should not be the IP of your server.
+     * @var string
+     */
+    public string $remoteIp;
+
+    /**
+     * @var Payment[]
+     */
+    protected array $payments = [];
+    protected string $dateCreated;
+    protected string $paymentLink;
+    protected string $deleted;
 
     /**
      * @param  string  $nextDueDate
