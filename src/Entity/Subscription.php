@@ -58,18 +58,11 @@ final class Subscription extends AbstractEntity
      */
     public CreditCardHolderInfo $creditCardHolderInfo;
     public string $creditCardToken;
-
-
-    public int $installmentCount;
-    public float $installmentValue;
-    public bool $postalService; // Define if the subscription will be sent by Postal Service
-    public string $authorizeOnly;
     /**
      * IP from where the customer is making the purchase. It should not be the IP of your server.
-     * @var string
+     * @var string Required
      */
     public string $remoteIp;
-
     /**
      * @var Payment[]
      */
