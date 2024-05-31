@@ -3,6 +3,7 @@
 namespace Adrianovcar\Asaas\Entity;
 
 use DateTime;
+use ReflectionClass;
 use stdClass;
 
 /**
@@ -29,7 +30,7 @@ abstract class AbstractEntity
         }
 
         if ($parameters instanceof stdClass) {
-            $parameters = get_object_vars($parameters);
+            $parameters = json_decode(json_encode($parameters), true);
         }
 
         $this->build($parameters);
@@ -44,14 +45,23 @@ abstract class AbstractEntity
     {
         foreach ($parameters as $property => $value) {
             if (property_exists($this, $property)) {
-                if ($value) {
-                    $this->$property = $value;
+                if ($value !== null) {
+                    if (!is_array($value)) {
+                        // set value to class property
+                        $this->$property = $value;
+                    } else {
+                        // create a new instance for class property
+                        $reflection_class = new ReflectionClass($this);
+                        $reflection_property = $reflection_class->getProperty($property);
+                        if ($reflection_property->hasType()) {
+                            $property_type = $reflection_property->getType()->getName();
+                            $this->$property = new $property_type((object) $value);
+                        }
+                    }
                 }
 
-                // Apply mutator
-
+                // apply mutator
                 $mutator = 'set'.ucfirst(static::convertToCamelCase($property));
-
                 if (method_exists($this, $mutator)) {
                     call_user_func_array(array($this, $mutator), [$value]);
                 }
@@ -93,5 +103,14 @@ abstract class AbstractEntity
         }
 
         return $date;
+    }
+
+    /**
+     * Convert object to an associative array
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return json_decode(json_encode($this), true);
     }
 }
