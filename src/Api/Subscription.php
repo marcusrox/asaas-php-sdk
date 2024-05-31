@@ -63,12 +63,12 @@ class Subscription extends AbstractApi
     /**
      * Create new subscription
      *
-     * @param  array  $data  Subscription Data
+     * @param  SubscriptionEntity  $subscription_entity
      * @return  SubscriptionEntity
      */
-    public function create(array $data): SubscriptionEntity
+    public function create(SubscriptionEntity $subscription_entity): SubscriptionEntity
     {
-        $subscription = $this->adapter->post(sprintf('%s/subscriptions', $this->endpoint), $data);
+        $subscription = $this->adapter->post(sprintf('%s/subscriptions', $this->endpoint), $subscription_entity->toArray());
         $subscription = json_decode($subscription);
 
         return new SubscriptionEntity($subscription);
@@ -78,12 +78,12 @@ class Subscription extends AbstractApi
      * Update Subscription By Id
      *
      * @param  string  $id  Subscription Id
-     * @param  array  $data  Subscription Data
+     * @param  SubscriptionEntity  $subscription_entity
      * @return  SubscriptionEntity
      */
-    public function update(string $id, array $data): SubscriptionEntity
+    public function update(string $id, SubscriptionEntity $subscription_entity): SubscriptionEntity
     {
-        $subscription = $this->adapter->post(sprintf('%s/subscriptions/%s', $this->endpoint, $id), $data);
+        $subscription = $this->adapter->post(sprintf('%s/subscriptions/%s', $this->endpoint, $id), $subscription_entity->toArray());
         $subscription = json_decode($subscription);
 
         return new SubscriptionEntity($subscription);
