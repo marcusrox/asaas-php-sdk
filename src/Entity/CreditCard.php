@@ -22,6 +22,19 @@ final class CreditCard extends AbstractEntity
     public string $ccv;
 
     /**
+     * @var string this property represents the credit card as a token, can avoid to send credit card infos again
+     */
+    protected string $creditCardNumber;
+    /**
+     * @var string this property represents the credit card as a token, can avoid to send credit card infos again
+     */
+    protected string $creditCardBrand;
+    /**
+     * @var string this property represents the credit card as a token, can avoid to send credit card infos again
+     */
+    protected string $creditCardToken;
+
+    /**
      * This method fill the entity with a wrong credit card, because when you are on sandbox environment
      * all credit card are approved, so this method is usefully to test the error flow
      *
