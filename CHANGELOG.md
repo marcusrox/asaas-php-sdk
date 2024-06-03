@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### [v2.0] - [TBD]
+### [v2.0] - [2024-06-03]
 
 #### Added
 
@@ -9,7 +9,7 @@
 - CreditCardHolderInfo entity
 - Fine entity
 - Interest entity
-- Auto binding entities
+- Entities auto binding
 
 #### Changed
 
