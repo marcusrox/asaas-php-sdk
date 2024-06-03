@@ -10,19 +10,6 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Subscription extends AbstractEntity
 {
-    const BILLING_TYPE_USER_CHOICE = 'UNDEFINED';
-    const BILLING_TYPE_CREDIT_CARD = 'CREDIT_CARD';
-    const BILLING_TYPE_BOLETO = 'BOLETO';
-    const BILLING_TYPE_PIX = 'PIX';
-
-    const CYCLE_WEEKLY = 'WEEKLY';
-    const CYCLE_BIWEEKLY = 'BIWEEKLY';
-    const CYCLE_MONTHLY = 'MONTHLY';
-    const CYCLE_BIMONTHLY = 'BIMONTHLY';
-    const CYCLE_QUARTERLY = 'QUARTERLY';
-    const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
-    const CYCLE_YEARLY = 'YEARLY';
-
     public ?string $id;
     /**
      * @var string Required field
@@ -39,7 +26,7 @@ final class Subscription extends AbstractEntity
     public float $value;
     /**
      * First installment due date
-     * @var string Required field
+     * @var string|null Required field
      */
     public ?string $nextDueDate;
     public ?Discount $discount;
@@ -82,7 +69,7 @@ final class Subscription extends AbstractEntity
     protected array $payments = [];
     protected string $dateCreated;
     protected string $paymentLink;
-    protected string $deleted;
+    protected bool $deleted;
 
     public function __construct($parameters = null)
     {

@@ -10,6 +10,19 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Payment extends AbstractEntity
 {
+    const TYPE_USER_CHOICE = 'UNDEFINED';
+    const TYPE_CREDIT_CARD = 'CREDIT_CARD';
+    const TYPE_BOLETO = 'BOLETO';
+    const TYPE_PIX = 'PIX';
+
+    const CYCLE_WEEKLY = 'WEEKLY';
+    const CYCLE_BIWEEKLY = 'BIWEEKLY';
+    const CYCLE_MONTHLY = 'MONTHLY';
+    const CYCLE_BIMONTHLY = 'BIMONTHLY';
+    const CYCLE_QUARTERLY = 'QUARTERLY';
+    const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
+    const CYCLE_YEARLY = 'YEARLY';
+
     public ?int $id;
     /**
      * @var string Required field
@@ -25,17 +38,19 @@ final class Payment extends AbstractEntity
      */
     public float $value;
     /**
-     * @var float Required field
+     * @var string Required field
      */
     public string $dueDate;
     public string $description;
     /**
+     * Valid only for "BOLETO"
      * @var string Days after due date to registration cancellation
      */
     public string $daysAfterDueDateToRegistrationCancellation;
     public string $externalReference;
     public int $installmentCount;
     /**
+     *
      * @var float Value for a payment that will be paid in installments (only in the case of installment payment). If this field is sent, the installmentValue field is not necessary, the calculation by installment will be automatic.
      */
     public float $totalValue;
@@ -47,9 +62,24 @@ final class Payment extends AbstractEntity
     public Interest $interest;
     public Fine $fine;
     public bool $postalService;
-    public array $split; // Todo: Implement split feature
-    public array $callback; // Todo: Implement callback feature
-
+    /**
+     * If the billing mode is "CREDIT_CARD", this field will be required
+     * @var string
+     */
+    public string $remoteIp;
+    /**
+     * A pre-authorization works as a reserve balance card client, as a guarantee that the expected value will be available.
+     *
+     * A Pre-Authorized charge will be automatically reversed after 3 days in the absence of its capture.
+     * To cancel the Pre-Authorization before 3 days, the Charge Reversal feature must be used.
+     * The Pre-Authorized charge will be created with the status "AUTHORIZED" if successful.
+     * In Sandbox, captures are automatically approved. If you want to simulate an error, simply use a charge that was not created using Pre-Authorization or with a status other than Authorized.
+     *
+     * @var bool
+     */
+    public bool $authorizeOnly = false;
+    public array $split;
+    public array $callback; // Todo: Implement split feature
 
     protected string $dateCreated;
     /**
