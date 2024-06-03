@@ -7,7 +7,6 @@ use Adrianovcar\Asaas\Entity\CreditCardHolderInfo;
 use Adrianovcar\Asaas\Entity\Fine;
 use Adrianovcar\Asaas\Entity\Payment;
 use Adrianovcar\Asaas\Entity\Subscription as SubscriptionEntity;
-use mysql_xdevapi\Warning;
 use function Pest\Faker\fake;
 
 global $asaas, $adapter, $customer;
@@ -17,7 +16,7 @@ test('avoid dd, dump, ray, ds')
     ->not->toBeUsed();
 
 // replace with your access token
-$accessToken = '$aact_YTU5YTE0M2M2N2I4MTliNzk0YTI5N2U5MzdjNWZmNDQ6OjAwMDAwMDAwMDAwMDAwMDE2OTc6OiRhYWNoXzEzZmZmMDE0LWFhM2MtNDIwZS1iMmFmLTA4YzcwNjY4MDkxNA==';
+$accessToken = 'your-token-here';
 $adapter = new GuzzleHttpAdapter($accessToken);
 $asaas = new Asaas($adapter, 'sandbox');
 
