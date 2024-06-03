@@ -107,14 +107,14 @@ class Payment extends AbstractApi
     /**
      * Create New Payment
      *
-     * @param  array  $data  Payment Data
+     * @param  PaymentEntity  $payment
      * @return  PaymentEntity
      * @throws Exception
      */
-    public function create(array $data): PaymentEntity
+    public function create(PaymentEntity $payment): PaymentEntity
     {
         try {
-            $payment = $this->adapter->post(sprintf('%s/payments', $this->endpoint), $data);
+            $payment = $this->adapter->post(sprintf('%s/payments', $this->endpoint), $payment->toArray());
             $payment = json_decode($payment);
 
             return new PaymentEntity($payment);

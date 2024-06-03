@@ -12,7 +12,7 @@ final class Payment extends AbstractEntity
 {
     const TYPE_USER_CHOICE = 'UNDEFINED';
     const TYPE_CREDIT_CARD = 'CREDIT_CARD';
-    const TYPE_BOLETO = 'BOLETO';
+    const TYPE_SLIP = 'BOLETO';
     const TYPE_PIX = 'PIX';
 
     const CYCLE_WEEKLY = 'WEEKLY';
@@ -23,7 +23,7 @@ final class Payment extends AbstractEntity
     const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
     const CYCLE_YEARLY = 'YEARLY';
 
-    public ?int $id;
+    public ?string $id;
     /**
      * @var string Required field
      */
@@ -38,9 +38,9 @@ final class Payment extends AbstractEntity
      */
     public float $value;
     /**
-     * @var string Required field
+     * @var string|null Required field
      */
-    public string $dueDate;
+    public ?string $dueDate;
     public string $description;
     /**
      * Valid only for "BOLETO"
@@ -78,6 +78,19 @@ final class Payment extends AbstractEntity
      * @var bool
      */
     public bool $authorizeOnly = false;
+    /**
+     * @var CreditCard Required if billingType is CREDIT_CARD
+     */
+    public ?CreditCard $creditCard;
+    /**
+     * @var CreditCardHolderInfo Required if billingType is CREDIT_CARD
+     */
+    public ?CreditCardHolderInfo $creditCardHolderInfo;
+    /**
+     * If this property is sent, the creditcard and creditcardholderinfo will not be required
+     * @var string|null Send the credit card token previously stored
+     */
+    public ?string $creditCardToken;
     public array $split;
     public array $callback; // Todo: Implement split feature
 

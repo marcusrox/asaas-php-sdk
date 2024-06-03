@@ -25,7 +25,7 @@ class Subscription extends AbstractApi
         $this->extractMeta($subscriptions);
 
         return array_map(function ($subscription) {
-            return new SubscriptionEntity($subscription->subscription);
+            return new SubscriptionEntity($subscription);
         }, $subscriptions->data);
     }
 
@@ -51,7 +51,7 @@ class Subscription extends AbstractApi
      */
     public function getByCustomer(string $customerId): array
     {
-        $subscriptions = $this->adapter->get(sprintf('%s/customers/%s/subscriptions?%s', $this->endpoint, $customerId, http_build_query($filters)));
+        $subscriptions = $this->adapter->get(sprintf('%s/customers/%s/subscriptions?%s', $this->endpoint, $customerId));
         $subscriptions = json_decode($subscriptions);
         $this->extractMeta($subscriptions);
 

@@ -5,7 +5,9 @@ use Adrianovcar\Asaas\Asaas;
 use Adrianovcar\Asaas\Entity\CreditCard;
 use Adrianovcar\Asaas\Entity\CreditCardHolderInfo;
 use Adrianovcar\Asaas\Entity\Fine;
+use Adrianovcar\Asaas\Entity\Payment;
 use Adrianovcar\Asaas\Entity\Subscription as SubscriptionEntity;
+use mysql_xdevapi\Warning;
 use function Pest\Faker\fake;
 
 global $asaas, $adapter, $customer;
@@ -65,9 +67,9 @@ test('create a new subscription', function () use ($asaas) {
 
     $subscription = new SubscriptionEntity();
     $subscription->customer = $customer->id;
-    $subscription->billingType = SubscriptionEntity::BILLING_TYPE_CREDIT_CARD;
+    $subscription->billingType = Payment::TYPE_CREDIT_CARD;
     $subscription->value = 10.50;
-    $subscription->cycle = SubscriptionEntity::CYCLE_MONTHLY;
+    $subscription->cycle = Payment::CYCLE_MONTHLY;
     $subscription->description = 'Service subscription';
     $subscription->externalReference = '334433';
     $subscription->creditCard = $credit_card;
@@ -80,10 +82,65 @@ test('create a new subscription', function () use ($asaas) {
         ->not()->toBeEmpty();
 });
 
-//
-//test('list all subscriptions', function () use ($asaas, $adapter) {
-//    $subscriptions = $asaas->subscription()->getAll();
-//
-//    expect($subscriptions)
-//        ->not()->toBeEmpty();
-//});
+test('create a new credit card payment', function () use ($asaas) {
+    $customers = $asaas->customer()->getAll();
+    $customer = $customers[0] ?? false;
+
+    $credit_card = (new CreditCard())->fill();
+    $credit_card_holder = new CreditCardHolderInfo();
+    $credit_card_holder->name = $credit_card->holderName;
+    $credit_card_holder->email = fake()->email();
+    $credit_card_holder->phone = fake('pt_BR')->phoneNumber();
+    $credit_card_holder->mobilePhone = fake('pt_BR')->phoneNumber();
+    $credit_card_holder->cpfCnpj = cpf::cpfRandom();
+    $credit_card_holder->addressNumber = fake()->buildingNumber();
+    $credit_card_holder->addressComplement = 'complemento';
+    $credit_card_holder->postalCode = '01153-000';
+
+    $payment = new Payment();
+    $payment->customer = $customer->id;
+    $payment->billingType = Payment::TYPE_CREDIT_CARD;
+    $payment->value = 150.25;
+    $payment->dueDate = '2024-06-03';
+    $payment->description = 'Service payment via credit card';
+    $payment->externalReference = 'id-55555';
+    $payment->creditCard = $credit_card;
+    $payment->creditCardHolderInfo = $credit_card_holder;
+
+    expect($payment)
+        ->not()->toBeEmpty();
+});
+
+test('create a new slip', function () use ($asaas) {
+    $customers = $asaas->customer()->getAll();
+    $customer = $customers[0] ?? false;
+
+    $payment = new Payment();
+    $payment->customer = $customer->id;
+    $payment->billingType = Payment::TYPE_SLIP;
+    $payment->value = 39.90;
+    $payment->dueDate = '2024-06-13';
+    $payment->description = 'Service payment via slip';
+    $payment->externalReference = 'id-777777';
+
+    $payment = $asaas->payment()->create($payment);
+
+    var_dump($payment);
+
+    expect($payment)
+        ->not()->toBeEmpty();
+});
+
+test('list all subscriptions', function () use ($asaas) {
+    $subscriptions = $asaas->subscription()->getAll();
+
+    expect($subscriptions)
+        ->not()->toBeEmpty();
+});
+
+test('list all payments', function () use ($asaas) {
+    $payments = $asaas->payment()->getAll();
+
+    expect($payments)
+        ->not()->toBeEmpty();
+});
