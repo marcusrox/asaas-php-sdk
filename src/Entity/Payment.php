@@ -2,8 +2,6 @@
 
 namespace Adrianovcar\Asaas\Entity;
 
-use PaymentStatus;
-
 /**
  * Payment Entity
  *

@@ -1,5 +1,7 @@
 <?php
 
+namespace Adrianovcar\Asaas\Entity;
+
 class PaymentStatus
 {
     const PENDING = 'PENDING';
