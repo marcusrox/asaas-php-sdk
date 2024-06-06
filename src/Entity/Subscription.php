@@ -2,6 +2,8 @@
 
 namespace Adrianovcar\Asaas\Entity;
 
+use PaymentStatus;
+
 /**
  * Subscription Entity
  *
@@ -10,6 +12,12 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Subscription extends AbstractEntity
 {
+    const IN_DEBT = [
+        PaymentStatus::OVERDUE,
+        PaymentStatus::CHARGEBACK_DISPUTE,
+        PaymentStatus::AWAITING_CHARGEBACK_REVERSAL
+    ];
+
     public ?string $id;
     /**
      * @var string Required field

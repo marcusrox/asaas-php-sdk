@@ -2,6 +2,8 @@
 
 namespace Adrianovcar\Asaas\Entity;
 
+use PaymentStatus;
+
 /**
  * Payment Entity
  *
@@ -22,6 +24,12 @@ final class Payment extends AbstractEntity
     const CYCLE_QUARTERLY = 'QUARTERLY';
     const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
     const CYCLE_YEARLY = 'YEARLY';
+
+    const IN_DEBT = [
+        PaymentStatus::OVERDUE,
+        PaymentStatus::CHARGEBACK_DISPUTE,
+        PaymentStatus::AWAITING_CHARGEBACK_REVERSAL
+    ];
 
     public ?string $id;
     /**
