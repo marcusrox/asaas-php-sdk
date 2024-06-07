@@ -180,12 +180,4 @@ final class Payment extends AbstractEntity
     protected bool $anticipable;
     protected string $refunds; // Todo: Implement refunds feature
     protected string $chargeback; // Todo: Implement chargeback feature
-
-    /**
-     * @param  string  $dueDate
-     */
-    public function setDueDate(string $dueDate): void
-    {
-        $this->dueDate = Payment::convertDateTime($dueDate);
-    }
 }

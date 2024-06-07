@@ -17,7 +17,7 @@ final class Subscription extends AbstractEntity
     const CYCLE_QUARTERLY = 'QUARTERLY';
     const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
     const CYCLE_YEARLY = 'YEARLY';
-    
+
     const IN_DEBT = [
         PaymentStatus::OVERDUE,
         PaymentStatus::PENDING,
@@ -101,21 +101,5 @@ final class Subscription extends AbstractEntity
             $_SERVER['HTTP_X_FORWARDED_FOR'] ??
             $_SERVER['HTTP_X_FORWARDED'] ??
             '0.0.0.0.';
-    }
-
-    /**
-     * @param  string  $nextDueDate
-     */
-    public function setNextDueDate(string $nextDueDate)
-    {
-        $this->nextDueDate = Subscription::convertDateTime($nextDueDate);
-    }
-
-    /**
-     * @param  string  $endDate
-     */
-    public function setEndDate(string $endDate)
-    {
-        $this->endDate = Subscription::convertDateTime($endDate);
     }
 }
