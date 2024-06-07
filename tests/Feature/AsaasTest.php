@@ -69,7 +69,7 @@ test('create a new subscription', function () use ($asaas) {
     $subscription->customer = $customer->id;
     $subscription->billingType = BillingType::CREDIT_CARD;
     $subscription->value = 10.50;
-    $subscription->cycle = Payment::CYCLE_MONTHLY;
+    $subscription->cycle = SubscriptionEntity::CYCLE_MONTHLY;
     $subscription->description = 'Service subscription';
     $subscription->externalReference = '334433';
     $subscription->creditCard = $credit_card;
