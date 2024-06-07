@@ -10,11 +10,6 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Payment extends AbstractEntity
 {
-    const TYPE_USER_CHOICE = 'UNDEFINED';
-    const TYPE_CREDIT_CARD = 'CREDIT_CARD';
-    const TYPE_SLIP = 'BOLETO';
-    const TYPE_PIX = 'PIX';
-
     const CYCLE_WEEKLY = 'WEEKLY';
     const CYCLE_BIWEEKLY = 'BIWEEKLY';
     const CYCLE_MONTHLY = 'MONTHLY';
@@ -36,7 +31,7 @@ final class Payment extends AbstractEntity
     public string $customer;
     /**
      * Required field
-     * @var string "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
+     * @var string BillingType "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
      */
     public string $billingType;
     /**

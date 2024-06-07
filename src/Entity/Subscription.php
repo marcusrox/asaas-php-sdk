@@ -23,7 +23,7 @@ final class Subscription extends AbstractEntity
     public string $customer;
     /**
      * Required field
-     * @var string "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
+     * @var string BillingType: "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
      */
     public string $billingType;
     /**
