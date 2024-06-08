@@ -164,7 +164,6 @@ class Customer extends AbstractApi
     {
         $filters = ['customer' => $customer_id] + $filters;
 
-        var_dump(http_build_query($filters));
         try {
             $payments = $this->adapter->get(sprintf('%s/payments?%s', $this->endpoint, http_build_query($filters)));
             $payments = json_decode($payments);
