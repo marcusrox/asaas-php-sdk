@@ -10,6 +10,21 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Subscription extends AbstractEntity
 {
+    const CYCLE_WEEKLY = 'WEEKLY';
+    const CYCLE_BIWEEKLY = 'BIWEEKLY';
+    const CYCLE_MONTHLY = 'MONTHLY';
+    const CYCLE_BIMONTHLY = 'BIMONTHLY';
+    const CYCLE_QUARTERLY = 'QUARTERLY';
+    const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
+    const CYCLE_YEARLY = 'YEARLY';
+
+    const IN_DEBT = [
+        PaymentStatus::OVERDUE,
+        PaymentStatus::PENDING,
+        PaymentStatus::CHARGEBACK_DISPUTE,
+        PaymentStatus::AWAITING_CHARGEBACK_REVERSAL,
+    ];
+
     public ?string $id;
     /**
      * @var string Required field
@@ -17,7 +32,7 @@ final class Subscription extends AbstractEntity
     public string $customer;
     /**
      * Required field
-     * @var string "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
+     * @var string BillingType: "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
      */
     public string $billingType;
     /**
@@ -86,21 +101,5 @@ final class Subscription extends AbstractEntity
             $_SERVER['HTTP_X_FORWARDED_FOR'] ??
             $_SERVER['HTTP_X_FORWARDED'] ??
             '0.0.0.0.';
-    }
-
-    /**
-     * @param  string  $nextDueDate
-     */
-    public function setNextDueDate(string $nextDueDate)
-    {
-        $this->nextDueDate = Subscription::convertDateTime($nextDueDate);
-    }
-
-    /**
-     * @param  string  $endDate
-     */
-    public function setEndDate(string $endDate)
-    {
-        $this->endDate = Subscription::convertDateTime($endDate);
     }
 }

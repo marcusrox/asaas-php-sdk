@@ -85,27 +85,6 @@ abstract class AbstractEntity
     }
 
     /**
-     * Convert date string do DateTime Object
-     *
-     * @param  string|null  $date  DateTime string
-     * @return DateTime|null
-     */
-    protected static function convertDateTime(string $date): ?DateTime
-    {
-        if (!$date) {
-            return null;
-        }
-
-        $date = DateTime::createFromFormat('d/m/Y', $date);
-
-        if (!$date) {
-            return null;
-        }
-
-        return $date;
-    }
-
-    /**
      * Convert object to an associative array
      * @return array
      */

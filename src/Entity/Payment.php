@@ -10,18 +10,12 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Payment extends AbstractEntity
 {
-    const TYPE_USER_CHOICE = 'UNDEFINED';
-    const TYPE_CREDIT_CARD = 'CREDIT_CARD';
-    const TYPE_SLIP = 'BOLETO';
-    const TYPE_PIX = 'PIX';
-
-    const CYCLE_WEEKLY = 'WEEKLY';
-    const CYCLE_BIWEEKLY = 'BIWEEKLY';
-    const CYCLE_MONTHLY = 'MONTHLY';
-    const CYCLE_BIMONTHLY = 'BIMONTHLY';
-    const CYCLE_QUARTERLY = 'QUARTERLY';
-    const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
-    const CYCLE_YEARLY = 'YEARLY';
+    const IN_DEBT = [
+        PaymentStatus::OVERDUE,
+        PaymentStatus::PENDING,
+        PaymentStatus::CHARGEBACK_DISPUTE,
+        PaymentStatus::AWAITING_CHARGEBACK_REVERSAL,
+    ];
 
     public ?string $id;
     /**
@@ -30,7 +24,7 @@ final class Payment extends AbstractEntity
     public string $customer;
     /**
      * Required field
-     * @var string "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
+     * @var string BillingType "UNDEFINED", "BOLETO", "CREDIT_CARD" or "PIX"
      */
     public string $billingType;
     /**
@@ -186,12 +180,4 @@ final class Payment extends AbstractEntity
     protected bool $anticipable;
     protected string $refunds; // Todo: Implement refunds feature
     protected string $chargeback; // Todo: Implement chargeback feature
-
-    /**
-     * @param  string  $dueDate
-     */
-    public function setDueDate(string $dueDate): void
-    {
-        $this->dueDate = Payment::convertDateTime($dueDate);
-    }
 }

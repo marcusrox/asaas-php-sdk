@@ -2,6 +2,7 @@
 
 use Adrianovcar\Asaas\Adapter\GuzzleHttpAdapter;
 use Adrianovcar\Asaas\Asaas;
+use Adrianovcar\Asaas\Entity\BillingType;
 use Adrianovcar\Asaas\Entity\CreditCard;
 use Adrianovcar\Asaas\Entity\CreditCardHolderInfo;
 use Adrianovcar\Asaas\Entity\Fine;
@@ -66,9 +67,9 @@ test('create a new subscription', function () use ($asaas) {
 
     $subscription = new SubscriptionEntity();
     $subscription->customer = $customer->id;
-    $subscription->billingType = Payment::TYPE_CREDIT_CARD;
+    $subscription->billingType = BillingType::CREDIT_CARD;
     $subscription->value = 10.50;
-    $subscription->cycle = Payment::CYCLE_MONTHLY;
+    $subscription->cycle = SubscriptionEntity::CYCLE_MONTHLY;
     $subscription->description = 'Service subscription';
     $subscription->externalReference = '334433';
     $subscription->creditCard = $credit_card;
@@ -98,7 +99,7 @@ test('create a new credit card payment', function () use ($asaas) {
 
     $payment = new Payment();
     $payment->customer = $customer->id;
-    $payment->billingType = Payment::TYPE_CREDIT_CARD;
+    $payment->billingType = BillingType::CREDIT_CARD;
     $payment->value = 150.25;
     $payment->dueDate = '2024-06-03';
     $payment->description = 'Service payment via credit card';
@@ -116,7 +117,7 @@ test('create a new slip', function () use ($asaas) {
 
     $payment = new Payment();
     $payment->customer = $customer->id;
-    $payment->billingType = Payment::TYPE_SLIP;
+    $payment->billingType = BillingType::SLIP;
     $payment->value = 39.90;
     $payment->dueDate = '2024-06-13';
     $payment->description = 'Service payment via slip';

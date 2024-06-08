@@ -3,6 +3,7 @@
 namespace Adrianovcar\Asaas\Api;
 
 use Adrianovcar\Asaas\Entity\Customer as CustomerEntity;
+use Adrianovcar\Asaas\Entity\Payment as PaymentEntity;
 use Exception;
 
 /**
@@ -123,6 +124,53 @@ class Customer extends AbstractApi
     {
         try {
             $this->adapter->delete(sprintf('%s/customers/%s', $this->endpoint, $id));
+        } catch (Exception $e) {
+            $this->dispatchException($e);
+        }
+    }
+
+    /**
+     * Check if the customer is in debt
+     *
+     * @param  string  $customer_id
+     * @return bool
+     */
+    public function inDebt(string $customer_id): bool
+    {
+        return (bool) self::getPaymentsInDebt($customer_id);
+    }
+
+    /**
+     * Get all payments considered "in debt" for this customer
+     *
+     * @param  string  $customer_id
+     * @return array
+     * @throws Exception
+     */
+    public function getPaymentsInDebt(string $customer_id): array
+    {
+        return (self::payments($customer_id, ['status' => implode(',', PaymentEntity::IN_DEBT)])) ?? [];
+    }
+
+    /**
+     * Get all payments
+     *
+     * @param  array  $filters  (optional) Filters Array
+     * @return  array  Payments Array
+     *
+     * @throws Exception
+     */
+    public function payments(string $customer_id, array $filters = []): array
+    {
+        $filters = ['customer' => $customer_id] + $filters;
+
+        try {
+            $payments = $this->adapter->get(sprintf('%s/payments?%s', $this->endpoint, http_build_query($filters)));
+            $payments = json_decode($payments);
+
+            return array_map(function ($payment) {
+                return new PaymentEntity($payment);
+            }, $payments->data);
         } catch (Exception $e) {
             $this->dispatchException($e);
         }
