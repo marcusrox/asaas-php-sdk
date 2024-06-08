@@ -14,29 +14,6 @@ use Exception;
 class Payment extends AbstractApi
 {
     /**
-     * Get all payments
-     *
-     * @param  array  $filters  (optional) Filters Array
-     * @return  array  Payments Array
-     *
-     * @throws Exception
-     */
-    public function getAll(array $filters = []): array
-    {
-        try {
-            $payments = $this->adapter->get(sprintf('%s/payments?%s', $this->endpoint, http_build_query($filters)));
-            $payments = json_decode($payments);
-            $this->extractMeta($payments);
-
-            return array_map(function ($payment) {
-                return new PaymentEntity($payment);
-            }, $payments->data);
-        } catch (Exception $e) {
-            $this->dispatchException($e);
-        }
-    }
-
-    /**
      * Get Payment By ID
      *
      * @param  string  $id  Payment ID
@@ -68,7 +45,24 @@ class Payment extends AbstractApi
     public function getByCustomer(string $customerId, array $filters = []): array
     {
         try {
-            $payments = $this->adapter->get(sprintf('%s/customers/%s/payments?%s', $this->endpoint, $customerId, http_build_query($filters)));
+            return self::getAll($filters + ['customer' => $customerId]);
+        } catch (Exception $e) {
+            $this->dispatchException($e);
+        }
+    }
+
+    /**
+     * Get all payments
+     *
+     * @param  array  $filters  (optional) Filters Array
+     * @return  array  Payments Array
+     *
+     * @throws Exception
+     */
+    public function getAll(array $filters = []): array
+    {
+        try {
+            $payments = $this->adapter->get(sprintf('%s/payments?%s', $this->endpoint, http_build_query($filters)));
             $payments = json_decode($payments);
             $this->extractMeta($payments);
 

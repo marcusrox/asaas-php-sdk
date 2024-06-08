@@ -3,8 +3,10 @@
 namespace Adrianovcar\Asaas\Api;
 
 use Adrianovcar\Asaas\Entity\Subscription as SubscriptionEntity;
+use Adrianovcar\Asaas\Entity\UpdatableSubscription;
 use DateTime;
 use Exception;
+use stdClass;
 
 /**
  * Subscription API Endpoint
@@ -63,21 +65,6 @@ class Subscription extends AbstractApi
     }
 
     /**
-     * Update Subscription By Id
-     *
-     * @param  string  $id  Subscription Id
-     * @param  SubscriptionEntity  $subscription_entity
-     * @return  SubscriptionEntity
-     */
-    public function update(string $id, SubscriptionEntity $subscription_entity): SubscriptionEntity
-    {
-        $subscription = $this->adapter->post(sprintf('%s/subscriptions/%s', $this->endpoint, $id), $subscription_entity->toArray());
-        $subscription = json_decode($subscription);
-
-        return new SubscriptionEntity($subscription);
-    }
-
-    /**
      * Delete Subscription By Id
      *
      * @param  string|int  $id  Subscription Id
@@ -85,6 +72,64 @@ class Subscription extends AbstractApi
     public function delete($id)
     {
         $this->adapter->delete(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
+    }
+
+    /**
+     * Change subscription plan
+     *
+     * @throws Exception
+     */
+    public function changePlan(SubscriptionEntity $current_subscription, UpdatableSubscription $new_subscription, $block_if_in_debt = false)
+    {
+        if ($block_if_in_debt) {
+            if ($this->inDebt($current_subscription->id)) {
+                throw new Exception('Subscription has payment pending', 402);
+            }
+        }
+
+        $new_subscription = self::evaluateProRata($current_subscription, $new_subscription);
+        return $this->update($new_subscription);
+    }
+
+    /**
+     * Check if the subscription is in debt
+     *
+     * @param  string  $subscription_id
+     * @return bool
+     */
+    public function inDebt(string $subscription_id): bool
+    {
+        return (bool) self::getPaymentsInDebt($subscription_id);
+    }
+
+    /**
+     * Get all payments considered "in debt"
+     *
+     * @param  string  $subscription_id
+     * @return array
+     */
+    public function getPaymentsInDebt(string $subscription_id): array
+    {
+        return (self::getPayments($subscription_id, SubscriptionEntity::IN_DEBT))->data ?? [];
+    }
+
+    /**
+     * Get a list of payments of a subscription
+     *
+     * @param  string  $subscription_id
+     * @param  array  $status
+     * @return stdClass Payments Array
+     */
+    public function getPayments(string $subscription_id, array $status = []): stdClass
+    {
+        $subscriptions = $this->adapter->get(sprintf('%s/subscriptions/%s/payments?status=%s', $this->endpoint, $subscription_id, implode(',', $status)));
+        $subscriptions = json_decode($subscriptions);
+
+        foreach ($subscriptions->data as $key => $payment) {
+            $subscriptions->data[$key] = new SubscriptionEntity($payment);
+        }
+
+        return $subscriptions;
     }
 
     /**
@@ -130,7 +175,7 @@ class Subscription extends AbstractApi
      * @return SubscriptionEntity
      * @throws Exception
      */
-    public function evaluateProRata(SubscriptionEntity $current_subscription, SubscriptionEntity $new_subscription): SubscriptionEntity
+    public static function evaluateProRata(SubscriptionEntity $current_subscription, UpdatableSubscription $new_subscription): UpdatableSubscription
     {
         // create the next due date object from asaas's payment schedule
         $next_due_date = (new DateTime($current_subscription->nextDueDate ?? 'now'))->setTime(0, 0);
@@ -146,13 +191,13 @@ class Subscription extends AbstractApi
             // the daily value of the current plan
             $current_plan_daily_value = $current_subscription->value / $days_in_month;
             // the remaining amount to be used on current cycle
-            $positive_balance = ($days_in_month - $days_left) * $current_plan_daily_value;
+            $positive_balance = $days_left * $current_plan_daily_value;
             // the daily value of the new plan
             $new_plan_daily_value = $new_subscription->value / $days_in_month;
             // the number of days that can be 'bought' using the remaining balance
             $days_paid_with_balance = ceil($positive_balance / $new_plan_daily_value);
             // update the next due date considering the number of days paid with balance
-            $next_due_date->modify("+{$days_paid_with_balance} days");
+            $next_due_date = $next_due_date->modify("+{$days_paid_with_balance} days");
         }
 
         // update the new subscription due date
@@ -162,14 +207,28 @@ class Subscription extends AbstractApi
     }
 
     /**
-     * Get Subscription By Id
+     * Update Subscription By Id
      *
-     * @param  string  $id  Subscription Id
+     * @param  UpdatableSubscription  $subscription
      * @return  SubscriptionEntity
      */
-    public function getById(string $id): SubscriptionEntity
+    public function update(UpdatableSubscription $subscription): SubscriptionEntity
     {
-        $subscription = $this->adapter->get(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
+        $subscription = $this->adapter->post(sprintf('%s/subscriptions/%s', $this->endpoint, $subscription->id), $subscription->toArray());
+        $subscription = json_decode($subscription);
+
+        return new SubscriptionEntity($subscription);
+    }
+
+    /**
+     * Get Subscription By Id
+     *
+     * @param  string  $subscription_id
+     * @return  SubscriptionEntity
+     */
+    public function getById(string $subscription_id): SubscriptionEntity
+    {
+        $subscription = $this->adapter->get(sprintf('%s/subscriptions/%s', $this->endpoint, $subscription_id));
         $subscription = json_decode($subscription);
 
         return new SubscriptionEntity($subscription);
