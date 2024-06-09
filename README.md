@@ -76,10 +76,10 @@ composer require adrianovcar/asaas-php-sdk
 
 Tips
 ------
-Esta biblioteca foi criada para facilitar a comunicação com o ASAAS, crie suas próprias regras de negócio para seu SaaS e acople esta biblioteca para pagamentos.
+This library was created to facilitate communication with ASAAS, create your own business rules for your SaaS and couple this library for payments.
 
-O AsaaS possui uma forte engrenagem para notificações de status de pagamentos e assinaturas, ele irá se comunicar com sua aplicação via webhooks.
-Você precisará configurar diretamente no ASAAS qual endpoint deseja apontar as requisições de webhook ([configure aqui](https://asaas.com/customerConfigIntegrations/webhooks))
+AsaaS has a strong gear for payment and subscription status notifications, it will communicate with your application via webhooks.
+You will need to configure directly in ASAAS which endpoint you want to point webhook requests to ([configure here](https://asaas.com/customerConfigIntegrations/webhooks))
 
 
 Examples
