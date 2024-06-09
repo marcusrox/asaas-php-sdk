@@ -1,6 +1,9 @@
 ASAAS PHP LIB
 =================
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/adrianovcar/asaas-php-sdk.svg?style=flat-square)](https://packagist.org/packages/adrianovcar/asaas-php-sdk)
+[![Total Downloads](https://img.shields.io/packagist/dt/adrianovcar/asaas-php-sdk.svg?style=flat-square)](https://packagist.org/packages/adrianovcar/asaas-php-sdk)
+
 SDK for integration with the [www.asaas.com](https://www.asaas.com) service API
 
 In addition to offering a payment gateway service, ASAAS also offers several other financial services, including acting as a BaaS (bank as a service).
