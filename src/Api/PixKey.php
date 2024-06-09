@@ -9,7 +9,6 @@ use Exception;
  * PixKey API Endpoint
  *
  * @author Adriano Carrijo <adrianovieirac@gmail.com>
- * @author Agência Softr <agencia.softr@gmail.com>
  */
 class PixKey extends AbstractApi
 {

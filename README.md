@@ -1,15 +1,66 @@
-Asaas.com PHP-SDK
+ASAAS PHP LIB
 =================
 
 SDK for integration with the [www.asaas.com](https://www.asaas.com) service API
 
 In addition to offering a payment gateway service, ASAAS also offers several other financial services, including acting as a BaaS (bank as a service).
+This SDK is being developed with a focus on the most frequent operations, check the features:
 
-This SDK is being developed with a focus on the most frequent operations. In this version, this SDK covers the following ASAAS features:
+- **CUSTOMERS**
+    - Check if customer is "in debt" _(new)_
+    - Get all customer's payments "in debt" _(new)_
+    - Get by id
+    - Get by customer email
+    - List all customer payments
+    - List all
+    - Create
+    - Update
+    - Delete
 
-- Customers (CRUD)
-- Payments (CRUD)
-- Subscriptions (CRUD)
+
+- **PAYMENTS**
+    - Get by id
+    - Get all payments by customer id
+    - Get all payments by subscription id
+    - Generate a QrCode to payment
+    - List all
+    - Create new payment (slip, credit card or pix)
+    - Update
+    - Delete
+
+
+- **SUBSCRIPTIONS**
+    - Check if subscription is "in debt" _(new)_
+    - Get all subscription's payments "in debt" _(new)_
+    - Evaluate next due date (based on pro-rata balance) _(new)_
+    - Change plan (with upgrade and downgrade feature) _(new)_
+    - Get by customer id
+    - Get by subscription id
+    - Get all payments by subscription id
+    - List all
+    - Create
+    - Update
+    - Delete
+
+
+- **PIX-KEY**
+    - Create
+    - List
+    - Get by id
+    - Delete
+
+
+- **PIX-QRCODE**
+    - Create
+
+
+- **CITIES**
+    - List
+    - Get city by id
+
+
+- **NOTIFICATIONS**
+    - The notifications entity is deprecated and will be improved on the next weeks
 
 Installation
 ----------
@@ -17,15 +68,18 @@ Installation
 The library can be installed using the composer dependency manager. To install the library and all its dependencies, run:
 
 ```bash
-composer require adrianovcar/asaas-php-sdk:2.0
+composer require adrianovcar/asaas-php-sdk
 ```
 
-Adapters
---------
+Tips
+------
+Esta biblioteca foi criada para facilitar a comunicação com o ASAAS, crie suas próprias regras de negócio para seu SaaS e acople esta biblioteca para pagamentos.
 
-From version 2.0, other adapters were removed and we started to maintain only the `GuzzleHttpAdapter`;
+O AsaaS possui uma forte engrenagem para notificações de status de pagamentos e assinaturas, ele irá se comunicar com sua aplicação via webhooks.
+Você precisará configurar diretamente no ASAAS qual endpoint deseja apontar as requisições de webhook ([configure aqui](https://asaas.com/customerConfigIntegrations/webhooks))
 
-Example
+
+Examples
 -------
 
 ```php
