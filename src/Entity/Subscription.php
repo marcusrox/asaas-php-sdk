@@ -18,6 +18,10 @@ final class Subscription extends AbstractEntity
     const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
     const CYCLE_YEARLY = 'YEARLY';
 
+    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_INACTIVE = 'INACTIVE';
+    const STATUS_EXPIRED = 'EXPIRED';
+
     const IN_DEBT = [
         PaymentStatus::OVERDUE,
         PaymentStatus::PENDING,
@@ -56,6 +60,7 @@ final class Subscription extends AbstractEntity
     /**
      * @var string Installments should be paid until this date
      */
+    public ?string $status;
     public ?string $endDate;
     /**
      * @var int Maximum number of payments to be created for this subscription
