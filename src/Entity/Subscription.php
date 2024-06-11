@@ -107,4 +107,33 @@ final class Subscription extends AbstractEntity
             $_SERVER['HTTP_X_FORWARDED'] ??
             '0.0.0.0.';
     }
+
+    /**
+     * Get the number of days by the given cycle
+     *
+     * @param  string  $cycle
+     * @return int
+     */
+    public static function getDaysByCycle(string $cycle): int
+    {
+        switch ($cycle) {
+            case self::CYCLE_WEEKLY:
+                return 7;
+            case self::CYCLE_BIWEEKLY:
+                return 14;
+            case self::CYCLE_MONTHLY:
+                return 30;
+            case self::CYCLE_BIMONTHLY:
+                return 60;
+            case self::CYCLE_QUARTERLY:
+                return 90;
+            case self::CYCLE_SEMIANNUALLY:
+                return 180;
+            case self::CYCLE_YEARLY:
+                return 365;
+
+            default:
+                return 0;
+        }
+    }
 }
