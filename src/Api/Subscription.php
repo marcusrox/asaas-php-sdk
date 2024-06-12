@@ -152,7 +152,7 @@ class Subscription extends AbstractApi
      *
      * @throws Exception
      */
-    public function changePlanWithNextDueDate(SubscriptionEntity $current_subscription, UpdatableSubscription $new_subscription, $block_if_in_debt = false): SubscriptionEntity
+    public function changePlanWithNextDueDate(SubscriptionEntity $current_subscription, UpdatableSubscription $new_subscription, bool $pretend = true, bool $block_if_in_debt = false): SubscriptionEntity
     {
         if ($block_if_in_debt) {
             if ($this->inDebt($current_subscription->id)) {
@@ -161,7 +161,12 @@ class Subscription extends AbstractApi
         }
 
         $new_subscription = self::estimateNextDueDate($current_subscription, $new_subscription);
-        return $this->update($new_subscription);
+
+        if ($pretend) {
+            return new SubscriptionEntity(array_merge($current_subscription->toArray(), $new_subscription->toArray()));
+        } else {
+            return $this->update($new_subscription);
+        }
     }
 
     /**
@@ -227,11 +232,12 @@ class Subscription extends AbstractApi
      *
      * @param  SubscriptionEntity  $current_subscription
      * @param  UpdatableSubscription  $new_subscription
+     * @param  bool  $pretend
      * @param  bool  $block_if_in_debt
      * @return SubscriptionEntity
      * @throws Exception
      */
-    public function changePlanWithBalanceUpdate(SubscriptionEntity $current_subscription, UpdatableSubscription $new_subscription, $block_if_in_debt = false): SubscriptionEntity
+    public function changePlanWithBalanceUpdate(SubscriptionEntity $current_subscription, UpdatableSubscription $new_subscription, bool $pretend = true, bool $block_if_in_debt = false): SubscriptionEntity
     {
         if ($block_if_in_debt) {
             if ($this->inDebt($current_subscription->id)) {
@@ -240,7 +246,12 @@ class Subscription extends AbstractApi
         }
 
         $new_subscription->value = self::estimateProRataValue($current_subscription, $new_subscription);
-        return $this->update($new_subscription);
+
+        if ($pretend) {
+            return new SubscriptionEntity(array_merge($current_subscription->toArray(), $new_subscription->toArray()));
+        } else {
+            return $this->update($new_subscription);
+        }
     }
 
     /**
