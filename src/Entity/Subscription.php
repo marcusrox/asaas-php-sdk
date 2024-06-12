@@ -2,6 +2,9 @@
 
 namespace Adrianovcar\Asaas\Entity;
 
+use Adrianovcar\Asaas\Enums\SubscriptionCycle;
+use Adrianovcar\Asaas\Enums\SubscriptionStatus;
+
 /**
  * Subscription Entity
  *
@@ -10,25 +13,6 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Subscription extends AbstractEntity
 {
-    const CYCLE_WEEKLY = 'WEEKLY';
-    const CYCLE_BIWEEKLY = 'BIWEEKLY';
-    const CYCLE_MONTHLY = 'MONTHLY';
-    const CYCLE_BIMONTHLY = 'BIMONTHLY';
-    const CYCLE_QUARTERLY = 'QUARTERLY';
-    const CYCLE_SEMIANNUALLY = 'SEMIANNUALLY';
-    const CYCLE_YEARLY = 'YEARLY';
-
-    const STATUS_ACTIVE = 'ACTIVE';
-    const STATUS_INACTIVE = 'INACTIVE';
-    const STATUS_EXPIRED = 'EXPIRED';
-
-    const IN_DEBT = [
-        PaymentStatus::OVERDUE,
-        PaymentStatus::PENDING,
-        PaymentStatus::CHARGEBACK_DISPUTE,
-        PaymentStatus::AWAITING_CHARGEBACK_REVERSAL,
-    ];
-
     public ?string $id;
     /**
      * @var string Required field
@@ -58,7 +42,7 @@ final class Subscription extends AbstractEntity
     public string $cycle;
     public string $description;
     /**
-     * @var string Installments should be paid until this date
+     * @var string|null Installments should be paid until this date
      */
     public ?string $status;
     public ?string $endDate;
@@ -106,34 +90,5 @@ final class Subscription extends AbstractEntity
             $_SERVER['HTTP_X_FORWARDED_FOR'] ??
             $_SERVER['HTTP_X_FORWARDED'] ??
             '0.0.0.0.';
-    }
-
-    /**
-     * Get the number of days by the given cycle
-     *
-     * @param  string  $cycle
-     * @return int
-     */
-    public static function getDaysByCycle(string $cycle): int
-    {
-        switch ($cycle) {
-            case self::CYCLE_WEEKLY:
-                return 7;
-            case self::CYCLE_BIWEEKLY:
-                return 14;
-            case self::CYCLE_MONTHLY:
-                return 30;
-            case self::CYCLE_BIMONTHLY:
-                return 60;
-            case self::CYCLE_QUARTERLY:
-                return 90;
-            case self::CYCLE_SEMIANNUALLY:
-                return 180;
-            case self::CYCLE_YEARLY:
-                return 365;
-
-            default:
-                return 0;
-        }
     }
 }
