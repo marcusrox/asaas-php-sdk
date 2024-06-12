@@ -4,6 +4,8 @@ namespace Adrianovcar\Asaas\Api;
 
 use Adrianovcar\Asaas\Entity\Subscription as SubscriptionEntity;
 use Adrianovcar\Asaas\Entity\UpdatableSubscription;
+use Adrianovcar\Asaas\Enums\PaymentStatus;
+use Adrianovcar\Asaas\Enums\SubscriptionCycle;
 use DateTime;
 use Exception;
 use stdClass;
@@ -109,7 +111,7 @@ class Subscription extends AbstractApi
      */
     public function getPaymentsInDebt(string $subscription_id): array
     {
-        return (self::getPayments($subscription_id, SubscriptionEntity::IN_DEBT))->data ?? [];
+        return (self::getPayments($subscription_id, PaymentStatus::inDebt()))->data ?? [];
     }
 
     /**
@@ -186,11 +188,11 @@ class Subscription extends AbstractApi
         // avoid create pro-rata formula if the next due date is today
         if ($days_left !== 0) {
             // the daily value of the current plan
-            $current_plan_daily_value = $current_subscription->value / SubscriptionEntity::getDaysByCycle($current_subscription->cycle);
+            $current_plan_daily_value = $current_subscription->value / SubscriptionCycle::getDays($current_subscription->cycle);
             // the remaining amount to be used on current cycle
             $positive_balance = $days_left * $current_plan_daily_value;
             // the daily value of the new plan
-            $new_plan_daily_value = $new_subscription->value / SubscriptionEntity::getDaysByCycle($new_subscription->cycle);
+            $new_plan_daily_value = $new_subscription->value / SubscriptionCycle::getDays($new_subscription->cycle);
             // the number of days that can be 'bought' using the remaining balance
             $days_paid_with_balance = self::calcDaysToAdd($days_left, ceil($positive_balance / $new_plan_daily_value));
             // update the next due date considering the number of days paid with balance
@@ -261,7 +263,7 @@ class Subscription extends AbstractApi
         // avoid create pro-rata formula if the next due date is today
         if ($days_left !== 0) {
             // the daily value of the current plan
-            $current_plan_daily_value = $current_subscription->value / SubscriptionEntity::getDaysByCycle($current_subscription->cycle);
+            $current_plan_daily_value = $current_subscription->value / SubscriptionCycle::getDays($current_subscription->cycle);
             // the remaining amount to be used on current cycle
             return round($new_subscription->value - ($days_left * $current_plan_daily_value), 2);
         }

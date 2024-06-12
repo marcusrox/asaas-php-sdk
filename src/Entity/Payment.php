@@ -10,13 +10,6 @@ namespace Adrianovcar\Asaas\Entity;
  */
 final class Payment extends AbstractEntity
 {
-    const IN_DEBT = [
-        PaymentStatus::OVERDUE,
-        PaymentStatus::PENDING,
-        PaymentStatus::CHARGEBACK_DISPUTE,
-        PaymentStatus::AWAITING_CHARGEBACK_REVERSAL,
-    ];
-
     public ?string $id;
     /**
      * @var string Required field
