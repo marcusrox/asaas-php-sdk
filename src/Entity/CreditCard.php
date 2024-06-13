@@ -66,4 +66,54 @@ final class CreditCard extends AbstractEntity
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getCreditCardNumber(): string
+    {
+        return $this->creditCardNumber;
+    }
+
+    /**
+     * @param  string  $creditCardNumber
+     */
+    public function setCreditCardNumber(string $creditCardNumber): void
+    {
+        $this->creditCardNumber = $creditCardNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreditCardBrand(): string
+    {
+        return $this->creditCardBrand;
+    }
+
+    /**
+     * @param  string  $creditCardBrand
+     */
+    public function setCreditCardBrand(string $creditCardBrand): void
+    {
+        $this->creditCardBrand = $creditCardBrand;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreditCardToken(): string
+    {
+        return $this->creditCardToken;
+    }
+
+    /**
+     * @param  string  $creditCardToken
+     */
+    public function setCreditCardToken(string $creditCardToken): void
+    {
+        $this->creditCardToken = $creditCardToken;
+    }
+
+    
 }
