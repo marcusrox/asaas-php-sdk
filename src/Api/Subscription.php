@@ -69,11 +69,14 @@ class Subscription extends AbstractApi
     /**
      * Delete Subscription By Id
      *
-     * @param  string|int  $id  Subscription Id
+     * @param  string  $id  Subscription Id
      */
-    public function delete($id)
+    public function delete(string $id): SubscriptionEntity
     {
-        $this->adapter->delete(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
+        $subscription = $this->adapter->delete(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
+        $subscription = json_decode($subscription);
+
+        return new SubscriptionEntity($subscription);
     }
 
     /**
