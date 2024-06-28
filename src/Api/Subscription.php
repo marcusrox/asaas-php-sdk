@@ -177,7 +177,7 @@ class Subscription extends AbstractApi
             // the number of days that can be 'bought' using the remaining balance
             $days_paid_with_balance = self::calcDaysToAdd($days_left, ceil($positive_balance / $new_plan_daily_value));
             // update the next due date considering the number of days paid with balance
-            $next_due_date = $today->modify("+{$days_paid_with_balance} days");
+            $next_due_date = $today->modify("+$days_paid_with_balance days");
         }
 
         // update the new subscription due date
@@ -206,23 +206,31 @@ class Subscription extends AbstractApi
      * Warning: This method requires you to update the next subscription payment cycle with the regular plan price, cause
      * the value sent to the API is the plan value minus the pro-rata value (positive balance).
      *
-     * @param  SubscriptionEntity  $current_subscription
+     * @param  string  $subscription_id
      * @param  UpdatableSubscription  $new_subscription
      * @param  bool  $pretend
      * @param  bool  $block_if_in_debt
      * @return SubscriptionEntity
      * @throws Exception
      */
-    public function changePlanWithBalanceUpdate(SubscriptionEntity $current_subscription, UpdatableSubscription $new_subscription, bool $pretend = true, bool $block_if_in_debt = false): SubscriptionEntity
+    public function changePlanWithBalanceUpdate(string $subscription_id, UpdatableSubscription $new_subscription, bool $pretend = true, bool $block_if_in_debt = false): SubscriptionEntity
     {
+        try {
+            $current_subscription = $this->getById($subscription_id);
+        } catch (Exception) {
+            throw new Exception('Subscription not found', 404);
+        }
+
         if ($block_if_in_debt) {
             if ($this->inDebt($current_subscription->id)) {
                 throw new Exception('Subscription has payment pending', 402);
             }
         }
 
-        if (!$current_subscription->creditCardToken) {
+        if (!$current_subscription->creditCard->getCreditCardToken()) {
             throw new Exception('Credit card token is required', 400);
+        } else {
+            $current_subscription->creditCardToken = $current_subscription->creditCard->getCreditCardToken();
         }
 
         $new_subscription->value = self::estimateProRataValue($current_subscription, $new_subscription);
@@ -248,6 +256,20 @@ class Subscription extends AbstractApi
         }
 
         return $subscription;
+    }
+
+    /**
+     * Get Subscription By Id
+     *
+     * @param  string  $subscription_id
+     * @return  SubscriptionEntity
+     */
+    public function getById(string $subscription_id): SubscriptionEntity
+    {
+        $subscription = $this->adapter->get(sprintf('%s/subscriptions/%s', $this->endpoint, $subscription_id));
+        $subscription = json_decode($subscription);
+
+        return new SubscriptionEntity($subscription);
     }
 
     /**
@@ -329,19 +351,5 @@ class Subscription extends AbstractApi
     {
         $subscription = $this->adapter->delete(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
         return json_decode($subscription);
-    }
-
-    /**
-     * Get Subscription By Id
-     *
-     * @param  string  $subscription_id
-     * @return  SubscriptionEntity
-     */
-    public function getById(string $subscription_id): SubscriptionEntity
-    {
-        $subscription = $this->adapter->get(sprintf('%s/subscriptions/%s', $this->endpoint, $subscription_id));
-        $subscription = json_decode($subscription);
-
-        return new SubscriptionEntity($subscription);
     }
 }
