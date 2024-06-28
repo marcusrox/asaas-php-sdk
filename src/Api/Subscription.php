@@ -53,31 +53,6 @@ class Subscription extends AbstractApi
     }
 
     /**
-     * Create new subscription
-     *
-     * @param  SubscriptionEntity  $subscription_entity
-     * @return  SubscriptionEntity
-     */
-    public function create(SubscriptionEntity $subscription_entity): SubscriptionEntity
-    {
-        $subscription = $this->adapter->post(sprintf('%s/subscriptions', $this->endpoint), $subscription_entity->toArray());
-        $subscription = json_decode($subscription);
-
-        return new SubscriptionEntity($subscription);
-    }
-
-    /**
-     * Delete Subscription By Id
-     *
-     * @param  string  $id  Subscription Id
-     */
-    public function delete(string $id)
-    {
-        $subscription = $this->adapter->delete(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
-        return json_decode($subscription);
-    }
-
-    /**
      * Change subscription plan
      *
      * @throws Exception
@@ -246,13 +221,33 @@ class Subscription extends AbstractApi
             }
         }
 
-        $new_subscription->value = self::estimateProRataValue($current_subscription, $new_subscription);
-
-        if ($pretend) {
-            return new SubscriptionEntity(array_merge($current_subscription->toArray(), $new_subscription->toArray()));
-        } else {
-            return $this->update($new_subscription);
+        if (!$current_subscription->creditCardToken) {
+            throw new Exception('Credit card token is required', 400);
         }
+
+        $new_subscription->value = self::estimateProRataValue($current_subscription, $new_subscription);
+        $new_subscription->nextDueDate = date('Y-m-d');
+
+        $subscription = self::mergeSubscriptions($current_subscription, $new_subscription);
+        $subscription->creditCard = $current_subscription->creditCard ?? null;
+
+        if (!$pretend) {
+            try {
+                // create a new subscription with the new conditions
+                $subscription = $this->create($subscription);
+
+                if ($subscription->id ?? false) {
+                    $this->delete($current_subscription->id);
+                } else {
+                    throw new Exception('New subscription fail', 500);
+                }
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage(), $e->getCode());
+            }
+
+        }
+
+        return $subscription;
     }
 
     /**
@@ -281,6 +276,59 @@ class Subscription extends AbstractApi
         }
 
         return $new_subscription->value;
+    }
+
+    /**
+     * Convert a subscription object to a subscription entity object
+     *
+     * @param  SubscriptionEntity  $older
+     * @param  UpdatableSubscription  $newer
+     * @param  bool  $preserve_id
+     * @return SubscriptionEntity
+     */
+    public static function mergeSubscriptions(SubscriptionEntity $older, UpdatableSubscription $newer, bool $preserve_id = false): SubscriptionEntity
+    {
+        $subscription = clone $older;
+        $subscription->id = $preserve_id ? $newer->id ?? $older->id : '';
+        $subscription->billingType = $newer->billingType ?? $subscription->billingType ?? null;
+        $subscription->value = $newer->value ?? $subscription->value ?? null;
+        $subscription->status = $newer->status ?? $subscription->status ?? null;
+        $subscription->nextDueDate = $newer->nextDueDate ?? $subscription->nextDueDate ?? null;
+        $subscription->discount = $newer->discount ?? $subscription->discount ?? null;
+        $subscription->interest = $newer->interest ?? $subscription->interest ?? null;
+        $subscription->fine = $newer->fine ?? $subscription->fine ?? null;
+        $subscription->cycle = $newer->cycle ?? $subscription->cycle ?? null;
+        $subscription->description = $newer->description ?? $subscription->description ?? null;
+        $subscription->endDate = $newer->endDate ?? $subscription->endDate ?? null;
+        $subscription->externalReference = $newer->externalReference ?? $subscription->externalReference ?? null;
+        $subscription->split = $newer->split ?? $subscription->split ?? null;
+
+        return $subscription;
+    }
+
+    /**
+     * Create new subscription
+     *
+     * @param  SubscriptionEntity  $subscription_entity
+     * @return  SubscriptionEntity
+     */
+    public function create(SubscriptionEntity $subscription_entity): SubscriptionEntity
+    {
+        $subscription = $this->adapter->post(sprintf('%s/subscriptions', $this->endpoint), $subscription_entity->toArray());
+        $subscription = json_decode($subscription);
+
+        return new SubscriptionEntity($subscription);
+    }
+
+    /**
+     * Delete Subscription By Id
+     *
+     * @param  string  $id  Subscription Id
+     */
+    public function delete(string $id)
+    {
+        $subscription = $this->adapter->delete(sprintf('%s/subscriptions/%s', $this->endpoint, $id));
+        return json_decode($subscription);
     }
 
     /**

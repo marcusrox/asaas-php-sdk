@@ -23,6 +23,7 @@ enum PaymentStatus: string
     {
         return [
             self::OVERDUE->value,
+            self::PENDING->value,
         ];
     }
 }

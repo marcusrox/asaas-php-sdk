@@ -65,7 +65,7 @@ final class Subscription extends AbstractEntity
      * If this property is sent, the creditcard and creditcardholderinfo will not be required
      * @var string|null Send the credit card token previously stored
      */
-    public ?string $creditCardToken;
+    public ?string $creditCardToken = '';
     /**
      * IP from where the customer is making the purchase. It should not be the IP of your server.
      * @var string Required
