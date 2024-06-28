@@ -23,8 +23,6 @@ enum PaymentStatus: string
     {
         return [
             self::OVERDUE->value,
-            self::CHARGEBACK_DISPUTE->value,
-            self::AWAITING_CHARGEBACK_REVERSAL->value,
         ];
     }
 }
