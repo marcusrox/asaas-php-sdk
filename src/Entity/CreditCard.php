@@ -104,7 +104,7 @@ final class CreditCard extends AbstractEntity
      */
     public function getCreditCardToken(): string
     {
-        return $this->creditCardToken;
+        return $this->creditCardToken ?? '';
     }
 
     /**
@@ -115,5 +115,5 @@ final class CreditCard extends AbstractEntity
         $this->creditCardToken = $creditCardToken;
     }
 
-    
+
 }
