@@ -1,5 +1,5 @@
 {
-    "name": "adrianovcar/asaas-php-sdk",
+    "name": "marcusrox/asaas-php-sdk",
     "type": "library",
     "description": "Asaas.com PHP API v3 Wrapper",
     "keywords": [
@@ -10,7 +10,7 @@
         "Boleto",
         "PIX"
     ],
-    "homepage": "https://github.com/adrianovcar/asaas-php-sdk",
+    "homepage": "https://github.com/marcusrox/asaas-php-sdk",
     "license": "MIT",
     "authors": [
         {
