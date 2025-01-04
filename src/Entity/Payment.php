@@ -150,11 +150,11 @@ final class Payment extends AbstractEntity
     /**
      * @var string URL da fatura
      */
-    protected string $invoiceUrl;
+    public string $invoiceUrl;
     /**
      * @var string URL para download do boleto
      */
-    protected string $bankSlipUrl;
+    public string $bankSlipUrl;
     /**
      * @var string Número da fatura
      */
